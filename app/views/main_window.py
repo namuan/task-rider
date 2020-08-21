@@ -10,7 +10,7 @@ from app.controllers import (
     MainWindowController,
     ConfigController,
     ShortcutController,
-    ScratchPadController,
+    AddTaskController, DisplayTasksController,
 )
 from app.generated.MainWindow_ui import Ui_MainWindow
 from app.settings.app_settings import app
@@ -27,6 +27,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.main_controller = MainWindowController(self, app)
         self.config_controller = ConfigController(self, app)
         self.shortcut_controller = ShortcutController(self, app)
+        self.add_task_controller = AddTaskController(self, app)
+        self.display_tasks_controller = DisplayTasksController(self, app)
 
         # Initialise components
         self.shortcut_controller.init_items()

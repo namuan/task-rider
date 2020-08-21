@@ -64,10 +64,10 @@
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
-        <widget class="QLineEdit" name="txtNewTask"/>
+        <widget class="QLineEdit" name="txt_task_title"/>
        </item>
        <item>
-        <widget class="QToolButton" name="btnAddTask">
+        <widget class="QToolButton" name="btn_add_task">
          <property name="text">
           <string>+</string>
          </property>

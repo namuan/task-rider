@@ -33,4 +33,4 @@ class MainWindowController:
         self.on_first_load()
 
     def on_first_load(self):
-        self.parent.scratch_pad_controller.init()
+        self.parent.display_tasks_controller.init()

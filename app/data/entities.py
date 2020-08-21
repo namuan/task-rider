@@ -1,16 +1,14 @@
 import json
+from enum import Enum, auto
 
 import attr
 import cattr
 
 APP_STATE_RECORD_TYPE = "app_state"
+TASK_ENTITY_RECORD_TYPE = "task_entity"
 
 
-@attr.s(auto_attribs=True)
-class AppState:
-    record_type: str = APP_STATE_RECORD_TYPE
-    scratch_note: str = ""
-
+class BaseEntity:
     @classmethod
     def from_json_str(cls, json_str):
         json_obj = json.loads(json_str)
@@ -27,3 +25,22 @@ class AppState:
 
     def to_json_str(self):
         return json.dumps(self.to_json())
+
+
+@attr.s(auto_attribs=True)
+class AppState(BaseEntity):
+    record_type: str = APP_STATE_RECORD_TYPE
+    scratch_note: str = ""
+
+
+class TaskState(Enum):
+    NEW = auto()
+    COMPLETED = auto()
+
+
+@attr.s(auto_attribs=True)
+class TaskEntity(BaseEntity):
+    id: str
+    task_title: str
+    record_type: str = TASK_ENTITY_RECORD_TYPE
+    task_state: TaskState = TaskState.NEW

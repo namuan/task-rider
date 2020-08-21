@@ -3,7 +3,7 @@ import logging
 import dataset
 
 from app.core.str_utils import plain_to_b64_str, b64_to_plain_str
-from app.data.entities import AppState, APP_STATE_RECORD_TYPE
+from app.data.entities import AppState, APP_STATE_RECORD_TYPE, TASK_ENTITY_RECORD_TYPE
 from app.events.signals import AppEvents
 
 
@@ -45,3 +45,15 @@ class LiteDataStore:
 
     def get_scratch_note(self):
         return b64_to_plain_str(self.app_state.scratch_note)
+
+    def update_task(self, task_entity):
+        table = self.db[TASK_ENTITY_RECORD_TYPE]
+        table.upsert(
+            dict(
+                name=TASK_ENTITY_RECORD_TYPE,
+                task_id=task_entity.id,
+                object=task_entity.to_json_str(),
+            ),
+            ["task_id"],
+        )
+        self.app_events.task_added.emit(task_entity.id)
