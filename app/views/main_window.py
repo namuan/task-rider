@@ -2,6 +2,7 @@ import logging
 import traceback
 
 import sys
+from PyQt5 import QtCore
 from PyQt5.QtGui import QCloseEvent
 from PyQt5.QtWidgets import QMainWindow, qApp
 
@@ -19,7 +20,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     """Main Window."""
 
     def __init__(self):
-        QMainWindow.__init__(self)
+        QMainWindow.__init__(self, None, QtCore.Qt.WindowStaysOnTopHint)
         self.setupUi(self)
 
         # Initialise controllers

@@ -1,6 +1,6 @@
-__version__ = "0.4.0"
-__appname__ = "OnePage"
-__description__ = "Simple ScratchPad"
-__desktopid__ = "dev.deskriders.OnePage"
+__version__ = "0.0.1"
+__appname__ = "TaskRider"
+__description__ = "Simple tasks management with Pomodoro timer"
+__desktopid__ = "dev.deskriders.TaskRider"
 
 from app.generated import resources_rc  # noqa

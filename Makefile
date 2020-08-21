@@ -22,7 +22,7 @@ setup: clean ## Re-initiates virtualenv
 	python3 -m venv venv
 	./venv/bin/python3 -m pip install -r requirements/dev.txt
 
-deps: ## Reinstalls dependencies
+deps: ## Reinstalls dependencies
 	./venv/bin/python3 -m pip install -r requirements/dev.txt
 
 uic: res ## Converts ui files in resources/views to python
