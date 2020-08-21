@@ -9,6 +9,6 @@ class ShortcutController:
 
     def init_items(self):
         short = QShortcut(QKeySequence("Ctrl+S"), self.parent)
-        short.activated.connect(self.parent.scratch_pad_controller.save_scratch_pad)
+        # short.activated.connect(self.parent.scratch_pad_controller.save_scratch_pad)
         config = QShortcut(QKeySequence("Ctrl+,"), self.parent)
         config.activated.connect(self.parent.config_controller.show_dialog)

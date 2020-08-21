@@ -27,7 +27,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.main_controller = MainWindowController(self, app)
         self.config_controller = ConfigController(self, app)
         self.shortcut_controller = ShortcutController(self, app)
-        self.scratch_pad_controller = ScratchPadController(self, app)
 
         # Initialise components
         self.shortcut_controller.init_items()
