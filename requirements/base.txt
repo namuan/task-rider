@@ -3,3 +3,4 @@ darkdetect
 attrs
 cattrs
 dataset
+schedule
