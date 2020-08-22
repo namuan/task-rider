@@ -3,7 +3,7 @@ import logging
 import dataset
 
 from app.core.str_utils import plain_to_b64_str, b64_to_plain_str
-from app.data.entities import AppState, APP_STATE_RECORD_TYPE, TASK_ENTITY_RECORD_TYPE
+from app.data.entities import AppState, APP_STATE_RECORD_TYPE, TASK_ENTITY_RECORD_TYPE, TaskEntity
 from app.events.signals import AppEvents
 
 
@@ -57,3 +57,8 @@ class LiteDataStore:
             ["task_id"],
         )
         self.app_events.task_added.emit(task_entity.id)
+
+    def get_task_entity(self, task_id):
+        table = self.db[TASK_ENTITY_RECORD_TYPE]
+        entity = table.find_one(task_id=task_id)
+        return TaskEntity.from_json_str(entity["object"])

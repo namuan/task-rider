@@ -52,7 +52,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QListWidget" name="lstTasks"/>
+     <widget class="QListWidget" name="lst_tasks"/>
     </item>
     <item>
      <widget class="QFrame" name="frame">
