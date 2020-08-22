@@ -62,8 +62,7 @@ class AppSettings:
     def load_configuration(self):
         app_config = AppConfig()
         app_config.item_checked = self.settings.value(
-            AppConfig.ITEM_CHECK,
-            app_config.item_checked,
+            AppConfig.ITEM_CHECK, app_config.item_checked,
         )
         return app_config
 

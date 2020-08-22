@@ -3,7 +3,11 @@ import logging
 import dataset
 
 from app.core.str_utils import plain_to_b64_str, b64_to_plain_str
-from app.data.entities import AppState, APP_STATE_RECORD_TYPE, TASK_ENTITY_RECORD_TYPE, TaskEntity
+from app.data.entities import (
+    AppState,
+    APP_STATE_RECORD_TYPE,
+    TASK_ENTITY_RECORD_TYPE,
+    TaskEntity, )
 from app.events.signals import AppEvents
 
 
@@ -52,13 +56,22 @@ class LiteDataStore:
             dict(
                 name=TASK_ENTITY_RECORD_TYPE,
                 task_id=task_entity.id,
+                task_state=str(task_entity.task_state),
                 object=task_entity.to_json_str(),
             ),
             ["task_id"],
         )
-        self.app_events.task_added.emit(task_entity.id)
+        self.app_events.task_updated.emit(task_entity.id)
 
     def get_task_entity(self, task_id):
         table = self.db[TASK_ENTITY_RECORD_TYPE]
         entity = table.find_one(task_id=task_id)
         return TaskEntity.from_json_str(entity["object"])
+
+    def get_tasks(self, task_state):
+        table = self.db[TASK_ENTITY_RECORD_TYPE]
+        new_tasks = table.find(name=TASK_ENTITY_RECORD_TYPE, task_state=task_state)
+        step_entities = [
+            TaskEntity.from_json_str(task["object"]) for task in new_tasks
+        ]
+        return sorted(step_entities, key=lambda s: s.order or 0,)

@@ -10,7 +10,8 @@ from app.controllers import (
     MainWindowController,
     ConfigController,
     ShortcutController,
-    AddTaskController, DisplayTasksController,
+    AddTaskController,
+    DisplayTasksController,
 )
 from app.generated.MainWindow_ui import Ui_MainWindow
 from app.settings.app_settings import app
