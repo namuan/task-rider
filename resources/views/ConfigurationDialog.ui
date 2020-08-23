@@ -41,21 +41,34 @@
    <property name="currentIndex">
     <number>0</number>
    </property>
-   <widget class="QWidget" name="notes">
+   <widget class="QWidget" name="timer">
     <attribute name="title">
-     <string>Notes</string>
+     <string>Timer</string>
     </attribute>
-    <widget class="QCheckBox" name="chkAppOption">
+    <widget class="QLabel" name="label">
      <property name="geometry">
       <rect>
        <x>20</x>
        <y>20</y>
-       <width>201</width>
+       <width>211</width>
        <height>20</height>
       </rect>
      </property>
      <property name="text">
-      <string>App configuration option</string>
+      <string>Timer Value (minutes):</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="txt_config_timer_value">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>20</y>
+       <width>41</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>10</string>
      </property>
     </widget>
    </widget>

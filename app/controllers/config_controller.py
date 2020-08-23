@@ -27,8 +27,8 @@ class ConfigController:
 
     def form_to_object(self):
         config = AppConfig()
-        config.item_checked = self.view.chkAppOption.isChecked()
+        config.timer_value = int(self.view.txt_config_timer_value.text())
         return config
 
     def object_to_form(self, app_config: AppConfig):
-        self.view.chkAppOption.setChecked(app_config.item_checked)
+        self.view.txt_config_timer_value.setText(str(app_config.timer_value))

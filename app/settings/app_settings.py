@@ -56,13 +56,14 @@ class AppSettings:
         self.settings.sync()
 
     def save_configuration(self, app_config: AppConfig):
-        self.settings.setValue(AppConfig.ITEM_CHECK, app_config.item_checked)
+        self.settings.setValue(AppConfig.TIMER_VALUE, app_config.timer_value)
         self.settings.sync()
+        self.data.app_events.config_changed.emit()
 
     def load_configuration(self):
         app_config = AppConfig()
-        app_config.item_checked = self.settings.value(
-            AppConfig.ITEM_CHECK, app_config.item_checked,
+        app_config.timer_value = self.settings.value(
+            AppConfig.TIMER_VALUE, app_config.timer_value
         )
         return app_config
 
@@ -71,6 +72,10 @@ class AppSettings:
 
     def window_state(self):
         return self.settings.value("windowState", None)
+
+    def timer_value(self):
+        app_config = self.load_configuration()
+        return app_config.timer_value
 
 
 app = AppSettings()

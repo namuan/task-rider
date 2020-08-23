@@ -6,12 +6,19 @@ class Timer:
     def __init__(self, timer_value, callback):
         self.t = QTimer()
         self.t.timeout.connect(self.fired)
-        self.initial_value = timer_value
-        self.timer_value = timer_value
+        self.initial_value = self.convert_to_seconds(timer_value)
+        self.timer_value = self.convert_to_seconds(timer_value)
         self.callback = callback
+
+    def convert_to_seconds(self, in_minutes):
+        return in_minutes * 60
 
     def get_time(self):
         return self.timer_value
+
+    def update_time(self, new_time_value):
+        self.initial_value = self.convert_to_seconds(new_time_value)
+        self.timer_value = self.convert_to_seconds(new_time_value)
 
     def start(self):
         self.t.start(1000)
@@ -42,16 +49,28 @@ class ManageTimerController:
         self.parent = parent
         self.app = app
         self.timer_on = False
-        self.initial_timer_value = int(self.parent.lbl_timer_value.text())
-        self.timer = Timer(timer_value=self.initial_timer_value * 60, callback=self.on_timer_fired)
+        self.initial_timer_value: int = int(self.app.timer_value())
+        self.timer = Timer(timer_value=self.initial_timer_value, callback=self.on_timer_fired)
         self.bell = BellSound()
+
+        # domain events
+        self.app.data.app_events.config_changed.connect(self.update_timer_value)
 
         # ui events
         self.parent.btn_toggle_timer.pressed.connect(self.toggle_timer)
         self.parent.btn_reset_timer.pressed.connect(self.reset_timer)
 
+        self.update_timer_text(self.timer.get_time())
+
+    def update_timer_value(self):
+        self.timer.update_time(self.app.timer_value())
+        self.update_timer_text(self.timer.get_time())
+
+    def update_timer_text(self, in_seconds):
+        self.parent.lbl_timer_value.setText(self.convert_to_minutes(in_seconds))
+
     def on_timer_fired(self, current_value):
-        self.parent.lbl_timer_value.setText(self.convert_to_minutes(current_value))
+        self.update_timer_text(current_value)
         if current_value <= 0:
             self.bell.ring()
             self.timer.reset()
