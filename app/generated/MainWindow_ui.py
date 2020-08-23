@@ -7,7 +7,7 @@
 # WARNING! All changes made in this file will be lost!
 
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtWidgets
 
 
 class Ui_MainWindow(object):
@@ -24,18 +24,7 @@ class Ui_MainWindow(object):
         self.frame_2.setObjectName("frame_2")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.frame_2)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.lbl_timer_value = QtWidgets.QLCDNumber(self.frame_2)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.lbl_timer_value.sizePolicy().hasHeightForWidth())
-        self.lbl_timer_value.setSizePolicy(sizePolicy)
-        font = QtGui.QFont()
-        font.setPointSize(20)
-        self.lbl_timer_value.setFont(font)
-        self.lbl_timer_value.setDigitCount(3)
-        self.lbl_timer_value.setSegmentStyle(QtWidgets.QLCDNumber.Flat)
-        self.lbl_timer_value.setProperty("intValue", 10)
+        self.lbl_timer_value = QtWidgets.QLabel(self.frame_2)
         self.lbl_timer_value.setObjectName("lbl_timer_value")
         self.horizontalLayout.addWidget(self.lbl_timer_value)
         self.btn_toggle_timer = QtWidgets.QPushButton(self.frame_2)
@@ -69,6 +58,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "TaskRider"))
+        self.lbl_timer_value.setText(_translate("MainWindow", "10.00"))
         self.btn_toggle_timer.setText(_translate("MainWindow", "Start"))
         self.btn_reset_timer.setText(_translate("MainWindow", "Reset"))
         self.btn_add_task.setText(_translate("MainWindow", "+"))

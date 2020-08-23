@@ -40,7 +40,7 @@ class ManageTimerController:
         self.parent.btn_reset_timer.pressed.connect(self.reset_timer)
 
     def on_timer_fired(self, current_value):
-        self.parent.lbl_timer_value.display(self.convert_to_minutes(current_value))
+        self.parent.lbl_timer_value.setText(self.convert_to_minutes(current_value))
         if current_value <= 0:
             self.timer.reset()
             self.toggle_timer()
@@ -63,4 +63,4 @@ class ManageTimerController:
             self.parent.btn_toggle_timer.setText("Start")
 
     def convert_to_minutes(self, seconds):
-        return seconds / 60
+        return "{}:{}".format(int(seconds / 60), seconds % 60)
