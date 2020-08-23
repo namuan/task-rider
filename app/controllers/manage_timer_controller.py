@@ -1,4 +1,5 @@
 from PyQt5.QtCore import QTimer
+from PyQt5.QtMultimedia import QSound
 
 
 class Timer:
@@ -28,12 +29,21 @@ class Timer:
         self.callback(self.timer_value)
 
 
+class BellSound:
+    def __init__(self):
+        self.sound = QSound(":/sounds/bell.wav")
+
+    def ring(self):
+        self.sound.play()
+
+
 class ManageTimerController:
     def __init__(self, parent, app):
         self.parent = parent
         self.app = app
         self.timer_on = False
-        self.timer = Timer(timer_value=10 * 60, callback=self.on_timer_fired)
+        self.timer = Timer(timer_value=1 * 20, callback=self.on_timer_fired)
+        self.bell = BellSound()
 
         # ui events
         self.parent.btn_toggle_timer.pressed.connect(self.toggle_timer)
@@ -42,6 +52,7 @@ class ManageTimerController:
     def on_timer_fired(self, current_value):
         self.parent.lbl_timer_value.setText(self.convert_to_minutes(current_value))
         if current_value <= 0:
+            self.bell.ring()
             self.timer.reset()
             self.toggle_timer()
 
@@ -63,4 +74,4 @@ class ManageTimerController:
             self.parent.btn_toggle_timer.setText("Start")
 
     def convert_to_minutes(self, seconds):
-        return "{}:{}".format(int(seconds / 60), seconds % 60)
+        return "{}:{:02.0f}".format(int(seconds / 60), seconds % 60)
