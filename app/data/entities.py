@@ -45,8 +45,10 @@ class TaskEntity(BaseEntity):
     task_title: str
     order: int = 0
     added_time = datetime.now()
+    done_time = None
     record_type: str = TASK_ENTITY_RECORD_TYPE
     task_state: TaskState = TaskState.NEW
 
     def mark_as_done(self):
         self.task_state = TaskState.DONE
+        self.done_time = datetime.now()

@@ -27,7 +27,7 @@
        <item>
         <widget class="QLabel" name="lbl_timer_value">
          <property name="text">
-          <string>10.00</string>
+          <string>10</string>
          </property>
         </widget>
        </item>

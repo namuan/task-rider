@@ -28,3 +28,6 @@ class DisplayTasksController:
         task_entities = self.app.data.get_tasks(str(TaskState.NEW))
         for task_entity in task_entities:
             self.view.render_task_entity(task_entity, self.on_task_done)
+        completed_task_entities = self.app.data.get_tasks(str(TaskState.DONE), 5)
+        for task_entity in completed_task_entities:
+            self.view.render_task_entity(task_entity)

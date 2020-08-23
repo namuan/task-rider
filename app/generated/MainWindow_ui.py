@@ -58,7 +58,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "TaskRider"))
-        self.lbl_timer_value.setText(_translate("MainWindow", "10.00"))
+        self.lbl_timer_value.setText(_translate("MainWindow", "10"))
         self.btn_toggle_timer.setText(_translate("MainWindow", "Start"))
         self.btn_reset_timer.setText(_translate("MainWindow", "Reset"))
         self.btn_add_task.setText(_translate("MainWindow", "+"))

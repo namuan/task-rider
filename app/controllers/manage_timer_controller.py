@@ -42,7 +42,8 @@ class ManageTimerController:
         self.parent = parent
         self.app = app
         self.timer_on = False
-        self.timer = Timer(timer_value=1 * 20, callback=self.on_timer_fired)
+        self.initial_timer_value = int(self.parent.lbl_timer_value.text())
+        self.timer = Timer(timer_value=self.initial_timer_value * 60, callback=self.on_timer_fired)
         self.bell = BellSound()
 
         # ui events

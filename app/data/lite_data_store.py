@@ -57,6 +57,8 @@ class LiteDataStore:
                 name=TASK_ENTITY_RECORD_TYPE,
                 task_id=task_entity.id,
                 task_state=str(task_entity.task_state),
+                added_time=task_entity.added_time,
+                done_time=task_entity.done_time,
                 object=task_entity.to_json_str(),
             ),
             ["task_id"],
@@ -68,9 +70,9 @@ class LiteDataStore:
         entity = table.find_one(task_id=task_id)
         return TaskEntity.from_json_str(entity["object"])
 
-    def get_tasks(self, task_state):
+    def get_tasks(self, task_state, limit=100):
         table = self.db[TASK_ENTITY_RECORD_TYPE]
-        new_tasks = table.find(name=TASK_ENTITY_RECORD_TYPE, task_state=task_state)
+        new_tasks = table.find(name=TASK_ENTITY_RECORD_TYPE, task_state=task_state, _limit=limit, order_by='-added_time')
         step_entities = [
             TaskEntity.from_json_str(task["object"]) for task in new_tasks
         ]
