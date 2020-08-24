@@ -1,18 +1,36 @@
 #!/usr/bin/env python
 
-import re
+from subprocess import check_call
 
-from setuptools import setup, find_packages
+from setuptools import setup, find_packages, Command
+
+from app import __version__, __appname__, __description__
 
 cmdclass = {}
 
-with open('app/__init__.py') as f:
-    _version = re.search(r'__version__\s+=\s+\"(.*)\"', f.read()).group(1)
 
-setup(name='OnePage',
-      version=_version,
+class bdist_app(Command):
+    """Custom command to build the application. """
+
+    description = 'Build the application'
+    user_options = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        check_call(['./venv/bin/pyinstaller', '-y', 'app.spec'])
+
+
+cmdclass['bdist_app'] = bdist_app
+
+setup(name=__appname__,
+      version=__version__,
       packages=find_packages(),
-      description='Simple ScratchPad',
+      description=__description__,
       author='Namuan',
       author_email='info@deskriders.dev',
       license='MIT',

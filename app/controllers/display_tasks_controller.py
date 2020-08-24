@@ -30,4 +30,4 @@ class DisplayTasksController:
             self.view.render_task_entity(task_entity, self.on_task_done)
         completed_task_entities = self.app.data.get_tasks(str(TaskState.DONE), 5)
         for task_entity in completed_task_entities:
-            self.view.render_task_entity(task_entity)
+            self.view.render_completed_task_entity(task_entity)

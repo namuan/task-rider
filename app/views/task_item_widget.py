@@ -1,6 +1,7 @@
 from functools import partial
 
 from PyQt5 import QtWidgets
+from PyQt5.QtGui import QIcon
 
 from app.data.entities import TaskState
 from app.generated.TaskItemWidget_ui import Ui_TaskItemWidget
@@ -11,6 +12,7 @@ class TaskItemWidget(QtWidgets.QWidget, Ui_TaskItemWidget):
         super().__init__(parent)
         self.setupUi(self)
         self.setLayout(self.horizontalLayout)
+        self.btn_task_done.setIcon(QIcon(":images/new-48.png"))
         self.task_entity = task_entity
         if on_btn_task_done_pressed:
             self.btn_task_done.pressed.connect(

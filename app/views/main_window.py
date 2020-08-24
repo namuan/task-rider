@@ -3,7 +3,7 @@ import traceback
 
 import sys
 from PyQt5 import QtCore
-from PyQt5.QtGui import QCloseEvent
+from PyQt5.QtGui import QCloseEvent, QIcon
 from PyQt5.QtWidgets import QMainWindow, qApp
 
 from app.controllers import (
@@ -23,6 +23,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
         QMainWindow.__init__(self, None, QtCore.Qt.WindowStaysOnTopHint)
         self.setupUi(self)
+        self.btn_add_task.setIcon(QIcon(":images/add-48.png"))
+        self.btn_toggle_timer.setIcon(QIcon(":images/start-48.png"))
+        self.btn_reset_timer.setIcon(QIcon(":images/reset-48.png"))
 
         # Initialise controllers
         self.main_controller = MainWindowController(self, app)

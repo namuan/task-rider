@@ -13,13 +13,13 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_TaskItemWidget(object):
     def setupUi(self, TaskItemWidget):
         TaskItemWidget.setObjectName("TaskItemWidget")
-        TaskItemWidget.resize(417, 45)
+        TaskItemWidget.resize(417, 50)
         font = QtGui.QFont()
         font.setPointSize(10)
         TaskItemWidget.setFont(font)
         self.horizontalLayout = QtWidgets.QHBoxLayout(TaskItemWidget)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.btn_task_done = QtWidgets.QPushButton(TaskItemWidget)
+        self.btn_task_done = QtWidgets.QToolButton(TaskItemWidget)
         self.btn_task_done.setObjectName("btn_task_done")
         self.horizontalLayout.addWidget(self.btn_task_done)
         self.txt_task_title = QtWidgets.QLineEdit(TaskItemWidget)
@@ -32,4 +32,4 @@ class Ui_TaskItemWidget(object):
     def retranslateUi(self, TaskItemWidget):
         _translate = QtCore.QCoreApplication.translate
         TaskItemWidget.setWindowTitle(_translate("TaskItemWidget", "Form"))
-        self.btn_task_done.setText(_translate("TaskItemWidget", "Done"))
+        self.btn_task_done.setText(_translate("TaskItemWidget", "..."))

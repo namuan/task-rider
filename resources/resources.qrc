@@ -9,6 +9,12 @@
         <file>icons/app.ico</file>
         <file>icons/app.svg</file>
         <file>images/configure-48.png</file>
+        <file>images/new-48.png</file>
+        <file>images/done-48.png</file>
+        <file>images/start-48.png</file>
+        <file>images/pause-48.png</file>
+        <file>images/reset-48.png</file>
+        <file>images/add-48.png</file>
         <file>sounds/bell.wav</file>
     </qresource>
 </RCC>

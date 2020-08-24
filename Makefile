@@ -31,6 +31,10 @@ uic: res ## Converts ui files in resources/views to python
 res: ## Generates and compresses resource listed in resources/resources.qrc
 	./venv/bin/pyrcc5 -compress 9 -o app/generated/resources_rc.py resources/resources.qrc
 
+package: clean ## Rebuilds venv and packages app
+	./venv/bin/python3 -m pip install -r requirements/build.txt
+	export PYTHONPATH=`pwd`:$PYTHONPATH && ./venv/bin/python3 setup.py bdist_app
+
 run: ## Runs the application
 	export PYTHONPATH=`pwd`:$PYTHONPATH && ./venv/bin/python3 app/__main__.py
 
