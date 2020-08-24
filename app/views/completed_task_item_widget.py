@@ -12,3 +12,4 @@ class CompletedTaskItemWidget(QtWidgets.QWidget, Ui_CompletedTaskItemWidget):
         self.btn_task_done.setIcon(QIcon(":images/done-48.png"))
         self.task_entity = task_entity
         self.lbl_task_title.setText(self.task_entity.task_title)
+        self.lbl_task_title.setToolTip(self.task_entity.task_title)
