@@ -16,3 +16,6 @@ class AddTaskController:
         task = TaskEntity(id=task_id, task_title=task_title)
         self.app.data.update_task(task)
         self.parent.txt_task_title.clear()
+
+    def prepare_entry(self):
+        self.parent.txt_task_title.setFocus()
