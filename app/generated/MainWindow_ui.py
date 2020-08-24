@@ -90,4 +90,5 @@ class Ui_MainWindow(object):
         self.lbl_timer_value.setText(_translate("MainWindow", "10"))
         self.btn_toggle_timer.setText(_translate("MainWindow", "Start"))
         self.btn_reset_timer.setText(_translate("MainWindow", "Reset"))
+        self.txt_task_title.setPlaceholderText(_translate("MainWindow", "Enter new task ..."))
         self.btn_add_task.setText(_translate("MainWindow", "+"))

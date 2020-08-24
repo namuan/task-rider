@@ -134,6 +134,9 @@
            <pointsize>30</pointsize>
           </font>
          </property>
+         <property name="placeholderText">
+          <string>Enter new task ...</string>
+         </property>
         </widget>
        </item>
        <item>
