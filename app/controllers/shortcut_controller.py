@@ -8,7 +8,11 @@ class ShortcutController:
         self.app = app
 
     def init_items(self):
-        short = QShortcut(QKeySequence("Ctrl+S"), self.parent)
-        # short.activated.connect(self.parent.scratch_pad_controller.save_scratch_pad)
+        toggle_timer = QShortcut(QKeySequence("Ctrl+S"), self.parent)
+        toggle_timer.activated.connect(self.parent.manage_timer_controller.toggle_timer)
+        reset_timer = QShortcut(QKeySequence("Ctrl+R"), self.parent)
+        reset_timer.activated.connect(self.parent.manage_timer_controller.reset_timer)
+        add_task = QShortcut(QKeySequence("Ctrl+Return"), self.parent)
+        add_task.activated.connect(self.parent.add_task_controller.add_task)
         config = QShortcut(QKeySequence("Ctrl+,"), self.parent)
         config.activated.connect(self.parent.config_controller.show_dialog)

@@ -14,10 +14,6 @@ class DisplayTasksController:
     def init(self):
         self.refresh()
 
-    def on_task_added(self, task_id):
-        task_entity = self.app.data.get_task_entity(task_id)
-        self.view.render_task_entity(task_entity, self.on_task_done)
-
     def on_task_done(self, task_id):
         task_entity = self.app.data.get_task_entity(task_id)
         task_entity.mark_as_done()
