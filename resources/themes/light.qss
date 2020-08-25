@@ -1,6 +1,9 @@
-/* Styles for Light theme
+/* Styles for Light theme */
 
-QMainWindow {
-  background-color: #000000;
+QListWidget::item:selected {
+   background: #CBD8E1;
 }
-*/
+
+QListView::item:selected {
+    color: black;
+}
