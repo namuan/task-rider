@@ -2,8 +2,8 @@ import logging
 
 from PyQt5 import QtWidgets
 
-from app.views.completed_task_item_widget import CompletedTaskItemWidget
-from app.views.task_item_widget import TaskItemWidget
+from app.widgets.completed_task_item_widget import CompletedTaskItemWidget
+from app.widgets.task_item_widget import TaskItemWidget
 
 
 class DisplayTasksView:
@@ -25,10 +25,10 @@ class DisplayTasksView:
         self.main_window.lst_tasks.addItem(task_widget_item)
         self.main_window.lst_tasks.setItemWidget(task_widget_item, task_widget)
 
-    def render_completed_task_entity(self, task_entity):
+    def render_completed_task_entity(self, task_entity, callback=None):
         logging.info("Adding a new completed task widget for {}".format(task_entity))
         task_widget = CompletedTaskItemWidget(
-            self.main_window, task_entity
+            self.main_window, task_entity, callback
         )
 
         task_widget_item = QtWidgets.QListWidgetItem(self.main_window.lst_tasks)

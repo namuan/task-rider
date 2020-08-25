@@ -19,6 +19,11 @@ class DisplayTasksController:
         task_entity.mark_as_done()
         self.app.data.update_task(task_entity)
 
+    def on_task_reopen(self, task_id):
+        task_entity = self.app.data.get_task_entity(task_id)
+        task_entity.mark_as_new()
+        self.app.data.update_task(task_entity)
+
     def refresh(self):
         self.view.clear()
         task_entities = self.app.data.get_tasks(str(TaskState.NEW))
@@ -26,4 +31,4 @@ class DisplayTasksController:
             self.view.render_task_entity(task_entity, self.on_task_done)
         completed_task_entities = self.app.data.get_tasks(str(TaskState.DONE), 5)
         for task_entity in completed_task_entities:
-            self.view.render_completed_task_entity(task_entity)
+            self.view.render_completed_task_entity(task_entity, self.on_task_reopen)

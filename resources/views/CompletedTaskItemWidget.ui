@@ -20,7 +20,7 @@
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
-    <widget class="QToolButton" name="btn_task_done">
+    <widget class="QToolButton" name="btn_task_reopen">
      <property name="text">
       <string>...</string>
      </property>

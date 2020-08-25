@@ -19,12 +19,12 @@ class Ui_CompletedTaskItemWidget(object):
         CompletedTaskItemWidget.setFont(font)
         self.horizontalLayout = QtWidgets.QHBoxLayout(CompletedTaskItemWidget)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.btn_task_done = QtWidgets.QToolButton(CompletedTaskItemWidget)
+        self.btn_task_reopen = QtWidgets.QToolButton(CompletedTaskItemWidget)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("../images/new-48.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.btn_task_done.setIcon(icon)
-        self.btn_task_done.setObjectName("btn_task_done")
-        self.horizontalLayout.addWidget(self.btn_task_done)
+        self.btn_task_reopen.setIcon(icon)
+        self.btn_task_reopen.setObjectName("btn_task_reopen")
+        self.horizontalLayout.addWidget(self.btn_task_reopen)
         self.lbl_task_title = QtWidgets.QLabel(CompletedTaskItemWidget)
         self.lbl_task_title.setText("")
         self.lbl_task_title.setObjectName("lbl_task_title")
@@ -36,4 +36,4 @@ class Ui_CompletedTaskItemWidget(object):
     def retranslateUi(self, CompletedTaskItemWidget):
         _translate = QtCore.QCoreApplication.translate
         CompletedTaskItemWidget.setWindowTitle(_translate("CompletedTaskItemWidget", "Form"))
-        self.btn_task_done.setText(_translate("CompletedTaskItemWidget", "..."))
+        self.btn_task_reopen.setText(_translate("CompletedTaskItemWidget", "..."))
