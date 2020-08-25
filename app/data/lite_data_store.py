@@ -7,7 +7,8 @@ from app.data.entities import (
     AppState,
     APP_STATE_RECORD_TYPE,
     TASK_ENTITY_RECORD_TYPE,
-    TaskEntity, )
+    TaskEntity,
+)
 from app.events.signals import AppEvents
 
 
@@ -72,8 +73,11 @@ class LiteDataStore:
 
     def get_tasks(self, task_state, limit=100):
         table = self.db[TASK_ENTITY_RECORD_TYPE]
-        new_tasks = table.find(name=TASK_ENTITY_RECORD_TYPE, task_state=task_state, _limit=limit, order_by='-added_time')
-        step_entities = [
-            TaskEntity.from_json_str(task["object"]) for task in new_tasks
-        ]
+        new_tasks = table.find(
+            name=TASK_ENTITY_RECORD_TYPE,
+            task_state=task_state,
+            _limit=limit,
+            order_by="-added_time",
+        )
+        step_entities = [TaskEntity.from_json_str(task["object"]) for task in new_tasks]
         return sorted(step_entities, key=lambda s: s.order or 0,)

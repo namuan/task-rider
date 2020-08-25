@@ -11,7 +11,8 @@ from app.controllers import (
     ConfigController,
     ShortcutController,
     AddTaskController,
-    DisplayTasksController, ManageTimerController,
+    DisplayTasksController,
+    ManageTimerController,
 )
 from app.generated.MainWindow_ui import Ui_MainWindow
 from app.settings.app_settings import app

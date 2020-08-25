@@ -16,7 +16,7 @@ class TaskItemWidget(QtWidgets.QWidget, Ui_TaskItemWidget):
         self.task_entity = task_entity
         if on_btn_task_done_pressed:
             self.btn_task_done.pressed.connect(
-                partial(on_btn_task_done_pressed, self.task_entity.id, )
+                partial(on_btn_task_done_pressed, self.task_entity.id,)
             )
 
         self.txt_task_title.setText(self.task_entity.task_title)

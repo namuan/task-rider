@@ -50,7 +50,9 @@ class ManageTimerController:
         self.app = app
         self.timer_on = False
         self.initial_timer_value: int = int(self.app.timer_value())
-        self.timer = Timer(timer_value=self.initial_timer_value, callback=self.on_timer_fired)
+        self.timer = Timer(
+            timer_value=self.initial_timer_value, callback=self.on_timer_fired
+        )
         self.bell = BellSound()
 
         # domain events
