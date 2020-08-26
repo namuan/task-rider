@@ -15,7 +15,9 @@ class DisplayTasksView:
 
     def widget_iterator(self):
         for i in range(self.main_window.lst_tasks.count()):
-            task_widget = self.main_window.lst_tasks.itemWidget(self.main_window.lst_tasks.item(i))
+            task_widget = self.main_window.lst_tasks.itemWidget(
+                self.main_window.lst_tasks.item(i)
+            )
             yield i, task_widget
 
     def render_task_entity(self, task_entity, callback=None):

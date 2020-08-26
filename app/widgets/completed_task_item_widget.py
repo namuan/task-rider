@@ -17,7 +17,7 @@ class CompletedTaskItemWidget(QtWidgets.QWidget, Ui_CompletedTaskItemWidget):
         self.lbl_task_title.setToolTip(self.task_entity.task_title)
         if on_btn_task_reopen_pressed:
             self.btn_task_reopen.pressed.connect(
-                partial(on_btn_task_reopen_pressed, self.task_entity.id, )
+                partial(on_btn_task_reopen_pressed, self.task_entity.id,)
             )
 
     def get_task_id(self):

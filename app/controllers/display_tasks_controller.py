@@ -19,7 +19,8 @@ class DisplayTasksController:
 
     def after_drop(self):
         task_entities = [
-            self.task_entity_with_position(pos, t.get_task_id()) for pos, t in self.view.widget_iterator()
+            self.task_entity_with_position(pos, t.get_task_id())
+            for pos, t in self.view.widget_iterator()
         ]
         self.app.data.update_many_tasks(task_entities)
 

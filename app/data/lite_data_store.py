@@ -89,9 +89,7 @@ class LiteDataStore:
     def get_tasks(self, task_state, limit=100):
         table = self.db[TASK_ENTITY_RECORD_TYPE]
         new_tasks = table.find(
-            name=TASK_ENTITY_RECORD_TYPE,
-            task_state=task_state,
-            _limit=limit
+            name=TASK_ENTITY_RECORD_TYPE, task_state=task_state, _limit=limit
         )
         step_entities = [TaskEntity.from_json_str(task["object"]) for task in new_tasks]
-        return sorted(step_entities, key=lambda s: s.order, )
+        return sorted(step_entities, key=lambda s: s.order,)
