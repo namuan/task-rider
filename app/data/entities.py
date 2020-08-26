@@ -43,7 +43,7 @@ class TaskState(Enum):
 class TaskEntity(BaseEntity):
     id: str
     task_title: str
-    order: int = 0
+    order: int = -1
     added_time = datetime.now()
     done_time = None
     record_type: str = TASK_ENTITY_RECORD_TYPE

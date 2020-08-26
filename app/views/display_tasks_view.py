@@ -13,6 +13,11 @@ class DisplayTasksView:
     def clear(self):
         self.main_window.lst_tasks.clear()
 
+    def widget_iterator(self):
+        for i in range(self.main_window.lst_tasks.count()):
+            task_widget = self.main_window.lst_tasks.itemWidget(self.main_window.lst_tasks.item(i))
+            yield i, task_widget
+
     def render_task_entity(self, task_entity, callback=None):
         logging.info("Adding a new task widget for {}".format(task_entity))
         task_widget = TaskItemWidget(self.main_window, task_entity, callback)

@@ -23,3 +23,6 @@ class TaskItemWidget(QtWidgets.QWidget, Ui_TaskItemWidget):
         if self.task_entity.task_state == TaskState.DONE:
             self.btn_task_done.hide()
             self.txt_task_title.setReadOnly(True)
+
+    def get_task_id(self):
+        return self.task_entity.id
