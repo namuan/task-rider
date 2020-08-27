@@ -41,9 +41,9 @@ class DisplayTasksController:
 
     def refresh(self):
         self.view.clear()
-        task_entities = self.app.data.get_tasks(str(TaskState.NEW))
+        task_entities = self.app.data.get_tasks(TaskState.NEW)
         for task_entity in task_entities:
             self.view.render_task_entity(task_entity, self.on_task_done)
-        completed_task_entities = self.app.data.get_tasks(str(TaskState.DONE), 5)
+        completed_task_entities = reversed(self.app.data.get_tasks(TaskState.DONE, 5, lambda t: t.done_time))
         for task_entity in completed_task_entities:
             self.view.render_completed_task_entity(task_entity, self.on_task_reopen)

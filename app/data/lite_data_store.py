@@ -6,8 +6,7 @@ from app.core.str_utils import plain_to_b64_str, b64_to_plain_str
 from app.data.entities import (
     AppState,
     APP_STATE_RECORD_TYPE,
-    TASK_ENTITY_RECORD_TYPE,
-    TaskEntity,
+    TASK_ENTITY_RECORD_TYPE, TaskEntity,
 )
 from app.events.signals import AppEvents
 
@@ -53,43 +52,29 @@ class LiteDataStore:
 
     def update_task(self, task_entity):
         table = self.db[TASK_ENTITY_RECORD_TYPE]
-        table.upsert(
-            dict(
-                name=TASK_ENTITY_RECORD_TYPE,
-                task_id=task_entity.id,
-                task_state=str(task_entity.task_state),
-                added_time=task_entity.added_time,
-                done_time=task_entity.done_time,
-                object=task_entity.to_json_str(),
-            ),
-            ["task_id"],
-        )
+        self._update_task(table, task_entity)
         self.app_events.task_updated.emit(task_entity.id)
 
     def update_many_tasks(self, task_entities):
         table = self.db[TASK_ENTITY_RECORD_TYPE]
         for task_entity in task_entities:
-            table.upsert(
-                dict(
-                    name=TASK_ENTITY_RECORD_TYPE,
-                    task_id=task_entity.id,
-                    task_state=str(task_entity.task_state),
-                    added_time=task_entity.added_time,
-                    done_time=task_entity.done_time,
-                    object=task_entity.to_json_str(),
-                ),
-                ["task_id"],
-            )
+            self._update_task(table, task_entity)
+
+    def _update_task(self, table, task_entity):
+        table.upsert(
+            task_entity.to_dict(),
+            ["task_id"],
+        )
 
     def get_task_entity(self, task_id):
         table = self.db[TASK_ENTITY_RECORD_TYPE]
         entity = table.find_one(task_id=task_id)
-        return TaskEntity.from_json_str(entity["object"])
+        return TaskEntity.from_dict(entity)
 
-    def get_tasks(self, task_state, limit=100):
+    def get_tasks(self, task_state, limit=100, sort_key=lambda s: s.order):
         table = self.db[TASK_ENTITY_RECORD_TYPE]
-        new_tasks = table.find(
-            name=TASK_ENTITY_RECORD_TYPE, task_state=task_state, _limit=limit
+        records = table.find(
+            name=TASK_ENTITY_RECORD_TYPE, task_state=str(task_state), _limit=limit
         )
-        step_entities = [TaskEntity.from_json_str(task["object"]) for task in new_tasks]
-        return sorted(step_entities, key=lambda s: s.order,)
+        task_entities = [TaskEntity.from_dict(d) for d in records]
+        return sorted(task_entities, key=sort_key, )

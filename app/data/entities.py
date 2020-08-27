@@ -43,9 +43,9 @@ class TaskState(Enum):
 class TaskEntity(BaseEntity):
     id: str
     task_title: str
-    order: int = -1
-    added_time = datetime.now()
-    done_time = None
+    order: int = 0
+    added_time: datetime = datetime.now()
+    done_time: datetime = None
     record_type: str = TASK_ENTITY_RECORD_TYPE
     task_state: TaskState = TaskState.NEW
 
@@ -56,3 +56,25 @@ class TaskEntity(BaseEntity):
     def mark_as_new(self):
         self.task_state = TaskState.NEW
         self.done_time = None
+
+    @classmethod
+    def from_dict(cls, dict_obj):
+        return TaskEntity(
+            id=dict_obj.get('task_id'),
+            task_title=dict_obj.get('task_title'),
+            task_state=dict_obj.get('task_state'),
+            added_time=dict_obj.get('added_time'),
+            done_time=dict_obj.get('done_time'),
+            order=dict_obj.get('order')
+        )
+
+    def to_dict(self):
+        return dict(
+            name=TASK_ENTITY_RECORD_TYPE,
+            task_id=self.id,
+            task_title=self.task_title,
+            task_state=str(self.task_state),
+            added_time=self.added_time,
+            done_time=self.done_time,
+            order=self.order,
+        )
