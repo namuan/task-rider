@@ -75,7 +75,7 @@ class ManageTimerController:
         self.update_timer_text(current_value)
         if current_value <= 0:
             self.bell.ring()
-            self.timer.reset()
+            self.reset_timer()
             self.toggle_timer()
 
     def toggle_timer(self):
@@ -83,8 +83,10 @@ class ManageTimerController:
         self.update_button_text()
         if self.timer_on:
             self.timer.start()
+            self.app.data.app_events.timer_started.emit()
         else:
             self.timer.pause()
+            self.app.data.app_events.timer_paused.emit()
 
     def reset_timer(self):
         self.timer.reset()

@@ -7,7 +7,7 @@ from app.data.entities import (
     AppState,
     APP_STATE_RECORD_TYPE,
     TASK_ENTITY_RECORD_TYPE,
-    TaskEntity,
+    TaskEntity, TaskState,
 )
 from app.events.signals import AppEvents
 
@@ -70,6 +70,11 @@ class LiteDataStore:
         table = self.db[TASK_ENTITY_RECORD_TYPE]
         entity = table.find_one(task_id=task_id)
         return TaskEntity.from_dict(entity)
+
+    def get_top_task(self):
+        table = self.db[TASK_ENTITY_RECORD_TYPE]
+        entity = table.find_one(task_state=str(TaskState.NEW), order_by="order")
+        return TaskEntity.from_dict(entity) if entity else None
 
     def get_last_task(self, task_state):
         table = self.db[TASK_ENTITY_RECORD_TYPE]

@@ -12,7 +12,7 @@ from app.controllers import (
     ShortcutController,
     AddTaskController,
     DisplayTasksController,
-    ManageTimerController,
+    ManageTimerController, OverlayController,
 )
 from app.generated.MainWindow_ui import Ui_MainWindow
 from app.settings.app_settings import app
@@ -24,6 +24,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
         QMainWindow.__init__(self, None, QtCore.Qt.WindowStaysOnTopHint)
         self.setupUi(self)
+
         self.btn_add_task.setIcon(QIcon(":images/add-48.png"))
         self.btn_toggle_timer.setIcon(QIcon(":images/start-48.png"))
         self.btn_reset_timer.setIcon(QIcon(":images/reset-48.png"))
@@ -35,6 +36,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.add_task_controller = AddTaskController(self, app)
         self.display_tasks_controller = DisplayTasksController(self, app)
         self.manage_timer_controller = ManageTimerController(self, app)
+        self.overlay_controller = OverlayController(self, app)
 
         # Initialise components
         self.shortcut_controller.init_items()
@@ -44,6 +46,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     # Main Window events
     def resizeEvent(self, event):
+        self.overlay_controller.resize(event.size())
         self.main_controller.after_window_loaded()
 
     @staticmethod
