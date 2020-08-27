@@ -15,7 +15,11 @@ class AddTaskController:
         task_title = self.parent.txt_task_title.text()
         if task_title.strip():
             last_new_task = self.app.data.get_last_task(TaskState.NEW)
-            task = TaskEntity(id=task_id, task_title=task_title, order=last_new_task.order + 1 if last_new_task else 1)
+            task = TaskEntity(
+                id=task_id,
+                task_title=task_title,
+                order=last_new_task.order + 1 if last_new_task else 1,
+            )
             self.app.data.update_task(task)
             self.parent.txt_task_title.clear()
 

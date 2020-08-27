@@ -60,12 +60,12 @@ class TaskEntity(BaseEntity):
     @classmethod
     def from_dict(cls, dict_obj):
         return TaskEntity(
-            id=dict_obj.get('task_id'),
-            task_title=dict_obj.get('task_title'),
-            task_state=dict_obj.get('task_state'),
-            added_time=dict_obj.get('added_time'),
-            done_time=dict_obj.get('done_time'),
-            order=dict_obj.get('order')
+            id=dict_obj.get("task_id"),
+            task_title=dict_obj.get("task_title"),
+            task_state=dict_obj.get("task_state"),
+            added_time=dict_obj.get("added_time"),
+            done_time=dict_obj.get("done_time"),
+            order=dict_obj.get("order"),
         )
 
     def to_dict(self):

@@ -6,7 +6,8 @@ from app.core.str_utils import plain_to_b64_str, b64_to_plain_str
 from app.data.entities import (
     AppState,
     APP_STATE_RECORD_TYPE,
-    TASK_ENTITY_RECORD_TYPE, TaskEntity,
+    TASK_ENTITY_RECORD_TYPE,
+    TaskEntity,
 )
 from app.events.signals import AppEvents
 
@@ -62,8 +63,7 @@ class LiteDataStore:
 
     def _update_task(self, table, task_entity):
         table.upsert(
-            task_entity.to_dict(),
-            ["task_id"],
+            task_entity.to_dict(), ["task_id"],
         )
 
     def get_task_entity(self, task_id):
@@ -73,12 +73,15 @@ class LiteDataStore:
 
     def get_last_task(self, task_state):
         table = self.db[TASK_ENTITY_RECORD_TYPE]
-        entity = table.find_one(task_state=str(task_state), order_by='-order')
+        entity = table.find_one(task_state=str(task_state), order_by="-order")
         return TaskEntity.from_dict(entity) if entity else None
 
-    def get_tasks(self, task_state, limit=100, sort_key='order'):
+    def get_tasks(self, task_state, limit=100, sort_key="order"):
         table = self.db[TASK_ENTITY_RECORD_TYPE]
         records = table.find(
-            name=TASK_ENTITY_RECORD_TYPE, task_state=str(task_state), _limit=limit, order_by=sort_key
+            name=TASK_ENTITY_RECORD_TYPE,
+            task_state=str(task_state),
+            _limit=limit,
+            order_by=sort_key,
         )
         return [TaskEntity.from_dict(d) for d in records]
