@@ -4,7 +4,6 @@ from PyQt5.QtWidgets import QWidget, QApplication
 
 
 class Overlay(QWidget):
-
     def __init__(self, parent=None):
         super().__init__(parent)
         self.parent = parent
@@ -25,7 +24,9 @@ class Overlay(QWidget):
             painter.setFont(font)
             painter.setPen(Qt.white)
             painter.drawText(
-                self.parent.rect(), Qt.AlignLeft | Qt.AlignTop | Qt.TextWordWrap, self.task_title
+                self.parent.rect(),
+                Qt.AlignLeft | Qt.AlignTop | Qt.TextWordWrap,
+                self.task_title,
             )
         painter.end()
 

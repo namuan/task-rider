@@ -7,7 +7,8 @@ from app.data.entities import (
     AppState,
     APP_STATE_RECORD_TYPE,
     TASK_ENTITY_RECORD_TYPE,
-    TaskEntity, TaskState,
+    TaskEntity,
+    TaskState,
 )
 from app.events.signals import AppEvents
 
