@@ -71,10 +71,14 @@ class LiteDataStore:
         entity = table.find_one(task_id=task_id)
         return TaskEntity.from_dict(entity)
 
-    def get_tasks(self, task_state, limit=100, sort_key=lambda s: s.order):
+    def get_last_task(self, task_state):
+        table = self.db[TASK_ENTITY_RECORD_TYPE]
+        entity = table.find_one(task_state=str(task_state), order_by='-order')
+        return TaskEntity.from_dict(entity) if entity else None
+
+    def get_tasks(self, task_state, limit=100, sort_key='order'):
         table = self.db[TASK_ENTITY_RECORD_TYPE]
         records = table.find(
-            name=TASK_ENTITY_RECORD_TYPE, task_state=str(task_state), _limit=limit
+            name=TASK_ENTITY_RECORD_TYPE, task_state=str(task_state), _limit=limit, order_by=sort_key
         )
-        task_entities = [TaskEntity.from_dict(d) for d in records]
-        return sorted(task_entities, key=sort_key, )
+        return [TaskEntity.from_dict(d) for d in records]

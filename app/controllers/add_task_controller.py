@@ -1,4 +1,4 @@
-from app.data.entities import TaskEntity
+from app.data.entities import TaskEntity, TaskState
 from app.utils.uuid_utils import gen_uuid
 
 
@@ -14,7 +14,8 @@ class AddTaskController:
         task_id = gen_uuid()
         task_title = self.parent.txt_task_title.text()
         if task_title.strip():
-            task = TaskEntity(id=task_id, task_title=task_title)
+            last_new_task = self.app.data.get_last_task(TaskState.NEW)
+            task = TaskEntity(id=task_id, task_title=task_title, order=last_new_task.order + 1 if last_new_task else 1)
             self.app.data.update_task(task)
             self.parent.txt_task_title.clear()
 
