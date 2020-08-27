@@ -50,6 +50,9 @@ class Ui_Configuration(object):
         self.retranslateUi(Configuration)
         self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(Configuration)
+        Configuration.setTabOrder(self.txt_config_timer_value, self.btn_save_configuration)
+        Configuration.setTabOrder(self.btn_save_configuration, self.btn_cancel_configuration)
+        Configuration.setTabOrder(self.btn_cancel_configuration, self.tabWidget)
 
     def retranslateUi(self, Configuration):
         _translate = QtCore.QCoreApplication.translate

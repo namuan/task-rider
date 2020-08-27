@@ -118,6 +118,12 @@
    </property>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>txt_config_timer_value</tabstop>
+  <tabstop>btn_save_configuration</tabstop>
+  <tabstop>btn_cancel_configuration</tabstop>
+  <tabstop>tabWidget</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
