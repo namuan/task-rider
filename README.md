@@ -44,4 +44,6 @@ venv                           Re-initiates virtualenv
 
 ### Credits
 
-🙏 https://icons8.com
+🙏 https://icons8.com for Icons
+🙏 https://logomakr.com/ for quickly generating logo
+🙏 https://www.svgcreator.com/ for converting logo to SVG
