@@ -1,38 +1,9 @@
-<p align="center">
-  <img src="https://github.com/namuan/one-page/raw/master/resources/images/app-logo.png" width="128px"/>
-</p>
-<h1 align="center">PyQt Boilerplate</h1>  
+# Task Rider
 
-   
+Simple todo list with Pomodoro timer
+
 ### Features:
 
-👉 Runnable application
-
-👉 Application configuration using `.ini` files
-
-👉 Separate requirements file for development and build
-
-👉 Manage UI files and resources from QtDesigner
-
-👉 Resource files and application icon
-
-👉 Make file to set up virtualenv, run and test application
-
-👉 Make command to generate code from QtDesigner generated `.ui` files
-
-👉 Make command to generate and compress resource files
-
-👉 Script to generate icons from SVG file (uses Inkscape)
-
-👉 Stylesheets for switching between Light/Dark modes
-
-👉 Rotating log file
-
-👉 Application data persistence support using Sqlite database
-
-### Light/Dark Themes
-
-![Themes](docs/images/pyqt-boilerplate-screenshots.png)
 
 ### Development
 
@@ -71,21 +42,6 @@ uic                            Converts ui files to python
 venv                           Re-initiates virtualenv
 ```
 
-### Application Icon
-
-An example application icon is available in `resources/icons/app.svg`.
-Run the following command to generate `.ico` and `.icns` files.
-Note that it requires `Inkspace` to be available on the local machine.
-Please check the following script to change location of `Inkscape`.
-
-```
-$ ./mk-icns.sh
-```
-
 ### Credits
-
-🙏 https://github.com/gmarull/pyside2-boilerplate
-
-🙏 https://github.com/zenorocha/dracula-theme
 
 🙏 https://icons8.com
