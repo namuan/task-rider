@@ -9,6 +9,7 @@ class AddTaskController:
 
         # ui events
         self.parent.btn_add_task.pressed.connect(self.add_task)
+        self.parent.txt_task_title.returnPressed.connect(self.parent.btn_add_task.click)
 
     def add_task(self):
         task_id = gen_uuid()
