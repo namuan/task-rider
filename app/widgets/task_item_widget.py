@@ -19,6 +19,7 @@ class TaskItemWidget(QtWidgets.QWidget, Ui_TaskItemWidget):
             )
 
         self.lbl_task_title.setText(self.task_entity.task_title)
+        self.lbl_task_title.setToolTip(self.task_entity.task_title)
 
     def get_task_id(self):
         return self.task_entity.id
