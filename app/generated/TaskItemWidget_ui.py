@@ -22,9 +22,10 @@ class Ui_TaskItemWidget(object):
         self.btn_task_done = QtWidgets.QToolButton(TaskItemWidget)
         self.btn_task_done.setObjectName("btn_task_done")
         self.horizontalLayout.addWidget(self.btn_task_done)
-        self.txt_task_title = QtWidgets.QLineEdit(TaskItemWidget)
-        self.txt_task_title.setObjectName("txt_task_title")
-        self.horizontalLayout.addWidget(self.txt_task_title)
+        self.lbl_task_title = QtWidgets.QLabel(TaskItemWidget)
+        self.lbl_task_title.setText("")
+        self.lbl_task_title.setObjectName("lbl_task_title")
+        self.horizontalLayout.addWidget(self.lbl_task_title)
 
         self.retranslateUi(TaskItemWidget)
         QtCore.QMetaObject.connectSlotsByName(TaskItemWidget)
