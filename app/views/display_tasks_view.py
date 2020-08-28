@@ -20,7 +20,9 @@ class DisplayTasksView:
         self.menu.addAction(delete_action)
 
         self.main_window.lst_tasks.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.main_window.lst_tasks.customContextMenuRequested.connect(self.on_display_context_menu)
+        self.main_window.lst_tasks.customContextMenuRequested.connect(
+            self.on_display_context_menu
+        )
 
     def on_display_context_menu(self, position):
         index: QModelIndex = self.main_window.lst_tasks.indexAt(position)

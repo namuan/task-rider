@@ -63,7 +63,6 @@ class TaskEntity(BaseEntity):
         self.task_state = TaskState.DELETED
         self.deleted_time = datetime.now()
 
-
     @classmethod
     def from_dict(cls, dict_obj):
         return TaskEntity(
