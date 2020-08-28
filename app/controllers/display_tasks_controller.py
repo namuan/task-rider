@@ -7,6 +7,7 @@ class DisplayTasksController:
         self.parent = parent
         self.app = app
         self.view = DisplayTasksView(parent)
+        self.view.setup_context_menu(on_delete_selected=self.on_delete_selected_item)
 
         # ui events
         self.parent.lst_tasks.model().rowsMoved.connect(self.after_drop)
@@ -16,6 +17,13 @@ class DisplayTasksController:
 
     def init(self):
         self.refresh()
+
+    def on_delete_selected_item(self):
+        task_id = self.view.selected_task_widget()
+        if task_id:
+            task_entity = self.app.data.get_task_entity(task_id)
+            task_entity.mark_as_deleted()
+            self.app.data.update_task(task_entity)
 
     def after_drop(self):
         task_entities = [

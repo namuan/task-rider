@@ -37,6 +37,7 @@ class AppState(BaseEntity):
 class TaskState(Enum):
     NEW = "new"
     DONE = "done"
+    DELETED = "deleted"
 
 
 @attr.s(auto_attribs=True)
@@ -46,6 +47,7 @@ class TaskEntity(BaseEntity):
     order: int = 0
     added_time: datetime = datetime.now()
     done_time: datetime = None
+    deleted_time: datetime = None
     record_type: str = TASK_ENTITY_RECORD_TYPE
     task_state: TaskState = TaskState.NEW
 
@@ -56,6 +58,11 @@ class TaskEntity(BaseEntity):
     def mark_as_new(self):
         self.task_state = TaskState.NEW
         self.done_time = None
+
+    def mark_as_deleted(self):
+        self.task_state = TaskState.DELETED
+        self.deleted_time = datetime.now()
+
 
     @classmethod
     def from_dict(cls, dict_obj):
