@@ -7,6 +7,7 @@ import cattr
 
 APP_STATE_RECORD_TYPE = "app_state"
 TASK_ENTITY_RECORD_TYPE = "task_entity"
+TIME_REPORT_RECORD_TYPE = "time_report_entity"
 
 
 class BaseEntity:
@@ -83,4 +84,34 @@ class TaskEntity(BaseEntity):
             added_time=self.added_time,
             done_time=self.done_time,
             order=self.order,
+        )
+
+
+@attr.s(auto_attribs=True)
+class TimeReportEntity(BaseEntity):
+    report_id: str
+    task_id: str
+    task_title: str
+    timer_start: datetime = None
+    timer_stop: datetime = None
+    record_type: str = TIME_REPORT_RECORD_TYPE
+
+    @classmethod
+    def from_dict(cls, dict_obj):
+        return TimeReportEntity(
+            report_id=dict_obj.get("report_id"),
+            task_id=dict_obj.get("task_id"),
+            task_title=dict_obj.get("task_title"),
+            timer_start=dict_obj.get("timer_start"),
+            timer_stop=dict_obj.get("timer_stop")
+        )
+
+    def to_dict(self):
+        return dict(
+            name=TIME_REPORT_RECORD_TYPE,
+            report_id=self.report_id,
+            task_id=self.task_id,
+            task_title=self.task_title,
+            timer_start=self.timer_start,
+            timer_stop=self.timer_stop
         )

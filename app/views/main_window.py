@@ -13,7 +13,7 @@ from app.controllers import (
     AddTaskController,
     DisplayTasksController,
     ManageTimerController,
-    OverlayController,
+    OverlayController, TimeReportController,
 )
 from app.generated.MainWindow_ui import Ui_MainWindow
 from app.settings.app_settings import app
@@ -38,6 +38,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.display_tasks_controller = DisplayTasksController(self, app)
         self.manage_timer_controller = ManageTimerController(self, app)
         self.overlay_controller = OverlayController(self, app)
+        self.time_report_controller = TimeReportController(self, app)
 
         # Initialise components
         self.shortcut_controller.init_items()

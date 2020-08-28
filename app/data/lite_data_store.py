@@ -57,6 +57,11 @@ class LiteDataStore:
         self._update_task(table, task_entity)
         self.app_events.task_updated.emit(task_entity.id)
 
+    def update_time_report(self, time_report_entity):
+        table = self.db[time_report_entity.record_type]
+        table.insert(time_report_entity.to_dict())
+        self.app_events.time_report_updated.emit(time_report_entity.report_id)
+
     def update_many_tasks(self, task_entities):
         table = self.db[TASK_ENTITY_RECORD_TYPE]
         for task_entity in task_entities:
