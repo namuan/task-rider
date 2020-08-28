@@ -2,6 +2,15 @@ export PROJECTNAME=$(shell basename "$(PWD)")
 
 .SILENT: ;               # no need for @
 
+release: ## Prints release process
+	echo "Update version in app/__init__.py and .travis.yml"
+	echo "Commit with Preparing Release x.x.x"
+	echo "Wait for Travis to create a new release for task-rider project"
+	echo "cd task-rider-releases"
+	echo "Update version in .appveyor.yml and .travis.yml"
+	echo "Commit and Push task-rider-releases to create a new Github and Windows release"
+	echo "Prepare OSX Release by following README in task-rider-releases project"
+
 clean-pyc: ## remove Python file artifacts
 	find . -name '*.pyc' -exec rm -f {} +
 	find . -name '*.pyo' -exec rm -f {} +
