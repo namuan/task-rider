@@ -22,3 +22,6 @@ class CompletedTaskItemWidget(QtWidgets.QWidget, Ui_CompletedTaskItemWidget):
 
     def get_task_id(self):
         return self.task_entity.id
+
+    def edit_task(self):
+        pass

@@ -26,6 +26,9 @@ class Ui_TaskItemWidget(object):
         self.lbl_task_title.setText("")
         self.lbl_task_title.setObjectName("lbl_task_title")
         self.horizontalLayout.addWidget(self.lbl_task_title)
+        self.txt_task_title = QtWidgets.QLineEdit(TaskItemWidget)
+        self.txt_task_title.setObjectName("txt_task_title")
+        self.horizontalLayout.addWidget(self.txt_task_title)
 
         self.retranslateUi(TaskItemWidget)
         QtCore.QMetaObject.connectSlotsByName(TaskItemWidget)

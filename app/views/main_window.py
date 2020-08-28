@@ -13,7 +13,8 @@ from app.controllers import (
     AddTaskController,
     DisplayTasksController,
     ManageTimerController,
-    OverlayController, TimeReportController,
+    OverlayController,
+    TimeReportController,
 )
 from app.generated.MainWindow_ui import Ui_MainWindow
 from app.settings.app_settings import app

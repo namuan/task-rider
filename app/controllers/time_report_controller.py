@@ -21,7 +21,7 @@ class TimeReportController:
             report_id=gen_uuid(),
             task_id=task_entity.id,
             task_title=task_entity.task_title,
-            timer_start=datetime.now()
+            timer_start=datetime.now(),
         )
         self.app.data.update_time_report(time_report)
 
@@ -32,6 +32,6 @@ class TimeReportController:
             report_id=gen_uuid(),
             task_id=task_entity.id,
             task_title=task_entity.task_title,
-            timer_stop=datetime.now()
+            timer_stop=datetime.now(),
         )
         self.app.data.update_time_report(time_report)

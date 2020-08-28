@@ -33,6 +33,9 @@
      </property>
     </widget>
    </item>
+   <item>
+    <widget class="QLineEdit" name="txt_task_title"/>
+   </item>
   </layout>
  </widget>
  <resources/>

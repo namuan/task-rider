@@ -103,7 +103,7 @@ class TimeReportEntity(BaseEntity):
             task_id=dict_obj.get("task_id"),
             task_title=dict_obj.get("task_title"),
             timer_start=dict_obj.get("timer_start"),
-            timer_stop=dict_obj.get("timer_stop")
+            timer_stop=dict_obj.get("timer_stop"),
         )
 
     def to_dict(self):
@@ -113,5 +113,5 @@ class TimeReportEntity(BaseEntity):
             task_id=self.task_id,
             task_title=self.task_title,
             timer_start=self.timer_start,
-            timer_stop=self.timer_stop
+            timer_stop=self.timer_stop,
         )
