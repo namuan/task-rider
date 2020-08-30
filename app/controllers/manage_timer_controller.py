@@ -90,6 +90,7 @@ class ManageTimerController:
 
     def reset_timer(self):
         self.timer.reset()
+        self.app.data.app_events.timer_reset.emit()
 
     def update_button_text(self):
         if self.timer_on:

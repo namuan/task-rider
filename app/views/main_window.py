@@ -4,7 +4,7 @@ import traceback
 import sys
 from PyQt5 import QtCore
 from PyQt5.QtGui import QCloseEvent, QIcon
-from PyQt5.QtWidgets import QMainWindow, qApp
+from PyQt5.QtWidgets import QMainWindow, qApp, QWidget
 
 from app.controllers import (
     MainWindowController,
@@ -14,7 +14,7 @@ from app.controllers import (
     DisplayTasksController,
     ManageTimerController,
     OverlayController,
-    TimeReportController,
+    TimeReportController, RefreshScreenController,
 )
 from app.generated.MainWindow_ui import Ui_MainWindow
 from app.settings.app_settings import app
@@ -40,6 +40,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.manage_timer_controller = ManageTimerController(self, app)
         self.overlay_controller = OverlayController(self, app)
         self.time_report_controller = TimeReportController(self, app)
+        self.refresh_screen_controller = RefreshScreenController(self, app)
 
         # Initialise components
         self.shortcut_controller.init_items()
@@ -51,6 +52,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def resizeEvent(self, event):
         self.overlay_controller.resize(event.size())
         self.main_controller.after_window_loaded()
+
+    def updateScreen(self):
+        QWidget.repaint(self)
 
     @staticmethod
     def log_uncaught_exceptions(cls, exc, tb) -> None:

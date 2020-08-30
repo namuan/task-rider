@@ -7,6 +7,7 @@ class AppEvents(QObject):
     config_changed = pyqtSignal()
     timer_started = pyqtSignal()
     timer_paused = pyqtSignal()
+    timer_reset = pyqtSignal()
 
 
 class AppCommands(QObject):
