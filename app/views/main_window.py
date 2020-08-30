@@ -14,7 +14,8 @@ from app.controllers import (
     DisplayTasksController,
     ManageTimerController,
     OverlayController,
-    TimeReportController, RefreshScreenController,
+    TimeReportController,
+    RefreshScreenController,
 )
 from app.generated.MainWindow_ui import Ui_MainWindow
 from app.settings.app_settings import app
