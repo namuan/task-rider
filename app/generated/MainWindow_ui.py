@@ -44,7 +44,7 @@ class Ui_MainWindow(object):
         self.lbl_timer_value.setObjectName("lbl_timer_value")
         self.horizontalLayout.addWidget(self.lbl_timer_value)
         self.frame_3 = QtWidgets.QFrame(parent=self.frame_2)
-        self.frame_3.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
+        self.frame_3.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
         self.frame_3.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
         self.frame_3.setObjectName("frame_3")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.frame_3)
