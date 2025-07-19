@@ -3,6 +3,7 @@ import logging
 from PyQt6 import QtWidgets
 from PyQt6.QtCore import Qt, QModelIndex
 from PyQt6.QtWidgets import QMenu
+from functools import partial
 from PyQt6.QtGui import QAction
 
 from app.widgets.completed_task_item_widget import CompletedTaskItemWidget
@@ -17,18 +18,18 @@ class DisplayTasksView:
         self.main_window.lst_tasks.itemDoubleClicked.connect(on_edit_selected)
 
     def setup_context_menu(self, on_delete_selected):
+        self.main_window.lst_tasks.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.main_window.lst_tasks.customContextMenuRequested.connect(
+            partial(self.on_display_context_menu, on_delete_selected)
+        )
+
+    def on_display_context_menu(self, on_delete_selected, position):
         delete_action = QAction("Delete")
         delete_action.triggered.connect(on_delete_selected)
 
         self.menu = QMenu()
         self.menu.addAction(delete_action)
 
-        self.main_window.lst_tasks.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
-        self.main_window.lst_tasks.customContextMenuRequested.connect(
-            self.on_display_context_menu
-        )
-
-    def on_display_context_menu(self, position):
         index: QModelIndex = self.main_window.lst_tasks.indexAt(position)
         if not index.isValid():
             return
