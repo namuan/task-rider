@@ -22,7 +22,11 @@ class ThemeLoader(QProxyStyle):
         filename = "themes:{}.qss".format(theme_mode)
 
         styles = styles_from_file(filename)
-        QApplication.instance().setStyleSheet(styles) if styles else self.log_error(filename)
+        (
+            QApplication.instance().setStyleSheet(styles)
+            if styles
+            else self.log_error(filename)
+        )
 
     def log_error(self, styles_file):
         logging.error(f"Unable to read file from {styles_file}")

@@ -14,17 +14,25 @@ class AppSettings:
     def __init__(self):
         self.settings: QSettings = QSettings()
         self.app_name: str = QApplication.instance().applicationName()
-        self.app_dir: Union[Path, Any] = Path(QStandardPaths.writableLocation(QStandardPaths.StandardLocation.AppConfigLocation))
+        self.app_dir: Union[Path, Any] = Path(
+            QStandardPaths.writableLocation(
+                QStandardPaths.StandardLocation.AppConfigLocation
+            )
+        )
 
         self.docs_location: Path = Path(
-            QStandardPaths.writableLocation(QStandardPaths.StandardLocation.DocumentsLocation)
+            QStandardPaths.writableLocation(
+                QStandardPaths.StandardLocation.DocumentsLocation
+            )
         )
         self.data: LiteDataStore = None
 
     def init(self):
         self.app_name = QApplication.instance().applicationName().lower()
         self.app_dir = Path(
-            QStandardPaths.writableLocation(QStandardPaths.StandardLocation.AppConfigLocation)
+            QStandardPaths.writableLocation(
+                QStandardPaths.StandardLocation.AppConfigLocation
+            )
         )
         self.app_dir.mkdir(exist_ok=True)
         settings_file = f"{self.app_name}.ini"

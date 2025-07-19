@@ -69,7 +69,8 @@ class LiteDataStore:
 
     def _update_task(self, table, task_entity):
         table.upsert(
-            task_entity.to_dict(), ["task_id"],
+            task_entity.to_dict(),
+            ["task_id"],
         )
 
     def get_task_entity(self, task_id):

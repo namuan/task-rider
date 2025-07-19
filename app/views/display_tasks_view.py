@@ -18,7 +18,9 @@ class DisplayTasksView:
         self.main_window.lst_tasks.itemDoubleClicked.connect(on_edit_selected)
 
     def setup_context_menu(self, on_delete_selected):
-        self.main_window.lst_tasks.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.main_window.lst_tasks.setContextMenuPolicy(
+            Qt.ContextMenuPolicy.CustomContextMenu
+        )
         self.main_window.lst_tasks.customContextMenuRequested.connect(
             partial(self.on_display_context_menu, on_delete_selected)
         )

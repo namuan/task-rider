@@ -25,7 +25,9 @@ class Overlay(QWidget):
             painter.setPen(Qt.GlobalColor.white)
             painter.drawText(
                 self.parent.rect(),
-                Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop | Qt.TextFlag.TextWordWrap,
+                Qt.AlignmentFlag.AlignLeft
+                | Qt.AlignmentFlag.AlignTop
+                | Qt.TextFlag.TextWordWrap,
                 self.task_title,
             )
         painter.end()
