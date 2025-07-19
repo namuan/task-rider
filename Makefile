@@ -53,6 +53,10 @@ run: ## Runs the application
 icns: ## Generates icon files from svg
 	echo "Run ./mk-icns.sh resources/icons/app.svg app"
 
+context: clean ## Build context file from application sources
+	echo "Generating context"
+	llm-context-builder.py --extensions .py --ignored_dirs build dist generated venv .venv .idea --print_contents --temp_file
+
 .PHONY: help
 .DEFAULT_GOAL := setup
 
