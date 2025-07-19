@@ -44,6 +44,9 @@ package: clean ## Rebuilds venv and packages app
 	./venv/bin/python3 -m pip install -r requirements/build.txt
 	export PYTHONPATH=`pwd`:$PYTHONPATH && ./venv/bin/python3 setup.py bdist_app
 
+install-macosx: package ## Installs application in users Application folder
+	./scripts/install-macosx.sh TaskRider.app
+
 run: ## Runs the application
 	export PYTHONPATH=`pwd`:$PYTHONPATH && ./venv/bin/python3 app/__main__.py
 

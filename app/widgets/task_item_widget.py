@@ -30,7 +30,7 @@ class TaskItemWidget(QtWidgets.QWidget, Ui_TaskItemWidget):
         self.setupUi(self)
         self.setLayout(self.horizontalLayout)
         self.txt_task_title.hide()
-        self.btn_task_done.setIcon(QIcon(":images/new-48.png"))
+        self.btn_task_done.setIcon(QIcon("images:new-48.png"))
 
         self.task_entity = task_entity
         self.on_task_save_handler = on_task_save_handler
