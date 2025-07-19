@@ -35,10 +35,10 @@ deps: ## Reinstalls dependencies
 	./venv/bin/python3 -m pip install -r requirements/dev.txt
 
 uic: res ## Converts ui files in resources/views to python
-	for i in `ls resources/views/*.ui`; do FNAME=`basename $${i} ".ui"`; ./venv/bin/pyuic5 $${i} > "app/generated/$${FNAME}_ui.py"; done
+	for i in `ls resources/views/*.ui`; do FNAME=`basename $${i} ".ui"`; ./venv/bin/pyuic6 $${i} > "app/generated/$${FNAME}_ui.py"; done
 
 res: ## Generates and compresses resource listed in resources/resources.qrc
-	./venv/bin/pyrcc5 -compress 9 -o app/generated/resources_rc.py resources/resources.qrc
+	echo "Not supported in PyQt6"
 
 package: clean ## Rebuilds venv and packages app
 	./venv/bin/python3 -m pip install -r requirements/build.txt

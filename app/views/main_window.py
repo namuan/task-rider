@@ -2,9 +2,9 @@ import logging
 import traceback
 
 import sys
-from PyQt5 import QtCore
-from PyQt5.QtGui import QCloseEvent, QIcon
-from PyQt5.QtWidgets import QMainWindow, qApp, QWidget
+from PyQt6 import QtCore
+from PyQt6.QtGui import QCloseEvent, QIcon
+from PyQt6.QtWidgets import QMainWindow, QApplication, QWidget
 
 from app.controllers import (
     MainWindowController,
@@ -18,14 +18,15 @@ from app.controllers import (
     RefreshScreenController,
 )
 from app.generated.MainWindow_ui import Ui_MainWindow
-from app.settings.app_settings import app
+from app.settings.app_settings import AppSettings
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
     """Main Window."""
 
-    def __init__(self):
-        QMainWindow.__init__(self, None, QtCore.Qt.WindowStaysOnTopHint)
+    def __init__(self, app_settings: AppSettings):
+        QMainWindow.__init__(self, None, QtCore.Qt.WindowType.WindowStaysOnTopHint)
+        self.app_settings = app_settings
         self.setupUi(self)
 
         self.btn_add_task.setIcon(QIcon(":images/add-48.png"))
@@ -33,15 +34,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.btn_reset_timer.setIcon(QIcon(":images/reset-48.png"))
 
         # Initialise controllers
-        self.main_controller = MainWindowController(self, app)
-        self.config_controller = ConfigController(self, app)
-        self.shortcut_controller = ShortcutController(self, app)
-        self.add_task_controller = AddTaskController(self, app)
-        self.display_tasks_controller = DisplayTasksController(self, app)
-        self.manage_timer_controller = ManageTimerController(self, app)
-        self.overlay_controller = OverlayController(self, app)
-        self.time_report_controller = TimeReportController(self, app)
-        self.refresh_screen_controller = RefreshScreenController(self, app)
+        self.main_controller = MainWindowController(self, app_settings)
+        self.config_controller = ConfigController(self, app_settings)
+        self.shortcut_controller = ShortcutController(self, app_settings)
+        self.add_task_controller = AddTaskController(self, app_settings)
+        self.display_tasks_controller = DisplayTasksController(self, app_settings)
+        self.manage_timer_controller = ManageTimerController(self, app_settings)
+        self.overlay_controller = OverlayController(self, app_settings)
+        self.time_report_controller = TimeReportController(self, app_settings)
+        self.refresh_screen_controller = RefreshScreenController(self, app_settings)
 
         # Initialise components
         self.shortcut_controller.init_items()
@@ -67,7 +68,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         event.accept()
         self.main_controller.shutdown()
         try:
-            qApp.exit(0)
+            QApplication.instance().exit(0)
         except:
             pass
 

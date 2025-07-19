@@ -1,4 +1,4 @@
-PyQt5==5.12.3
+PyQt6
 darkdetect
 attrs
 cattrs

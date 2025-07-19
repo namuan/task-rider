@@ -1,8 +1,8 @@
 from functools import partial
 
-from PyQt5 import QtWidgets, QtCore
-from PyQt5.QtCore import QObject, QEvent
-from PyQt5.QtGui import QIcon
+from PyQt6 import QtWidgets, QtCore
+from PyQt6.QtCore import QObject, QEvent
+from PyQt6.QtGui import QIcon
 
 from app.generated.TaskItemWidget_ui import Ui_TaskItemWidget
 
@@ -14,8 +14,8 @@ class LineEditorEvents(QObject):
 
     def eventFilter(self, source: QObject, event: QEvent):
         if (
-            event.type() == QtCore.QEvent.KeyPress
-            and event.key() == QtCore.Qt.Key_Escape
+            event.type() == QtCore.QEvent.Type.KeyPress
+            and event.key() == QtCore.Qt.Key.Key_Escape
         ):
             self.parent.dismiss_editor()
 

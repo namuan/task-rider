@@ -1,5 +1,5 @@
-from PyQt5.QtCore import QTimer
-from PyQt5.QtMultimedia import QSound
+from PyQt6.QtCore import QTimer, QUrl
+from PyQt6.QtMultimedia import QSoundEffect
 
 
 class Timer:
@@ -38,7 +38,8 @@ class Timer:
 
 class BellSound:
     def __init__(self):
-        self.sound = QSound(":/sounds/bell.wav")
+        self.sound = QSoundEffect()
+        self.sound.setSource(QUrl.fromLocalFile(":/sounds/bell.wav"))
 
     def ring(self):
         self.sound.play()

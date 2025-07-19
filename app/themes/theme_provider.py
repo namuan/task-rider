@@ -1,5 +1,5 @@
 import darkdetect
-from PyQt5.QtGui import QFont, QIcon, QFontDatabase
+from PyQt6.QtGui import QFont, QIcon, QFontDatabase
 
 from app.themes.theme_loader import ThemeLoader, styles_from_file
 
@@ -17,11 +17,10 @@ def configure_theme(app):
     theme_mode = "dark" if is_dark() else "light"
     app.style().load_stylesheet(theme_mode)
 
-    font_db = QFontDatabase()
-    font_db.addApplicationFont(":/fonts/JetBrainsMono-Regular.ttf")
+    QFontDatabase.addApplicationFont(":/fonts/JetBrainsMono-Regular.ttf")
 
     current_font: QFont = QFont("JetBrains Mono")
-    current_font.setPointSize(14)
+    current_font.setPointSize(16)
     app.setFont(current_font)
 
 

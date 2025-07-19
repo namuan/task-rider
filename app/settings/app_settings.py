@@ -3,8 +3,8 @@ import logging.handlers
 from pathlib import Path
 from typing import Any, Union
 
-from PyQt5.QtCore import QSettings, QStandardPaths
-from PyQt5.QtWidgets import qApp
+from PyQt6.QtCore import QSettings, QStandardPaths
+from PyQt6.QtWidgets import QApplication
 
 from app.data import LiteDataStore
 from app.settings.app_config import AppConfig
@@ -12,23 +12,24 @@ from app.settings.app_config import AppConfig
 
 class AppSettings:
     def __init__(self):
-        self.settings: QSettings = None
-        self.app_name: str = None
-        self.app_dir: Union[Path, Any] = None
+        self.settings: QSettings = QSettings()
+        self.app_name: str = QApplication.instance().applicationName()
+        self.app_dir: Union[Path, Any] = Path(QStandardPaths.writableLocation(QStandardPaths.StandardLocation.AppConfigLocation))
+
         self.docs_location: Path = Path(
-            QStandardPaths.writableLocation(QStandardPaths.DocumentsLocation)
+            QStandardPaths.writableLocation(QStandardPaths.StandardLocation.DocumentsLocation)
         )
         self.data: LiteDataStore = None
 
     def init(self):
-        self.app_name = qApp.applicationName().lower()
+        self.app_name = QApplication.instance().applicationName().lower()
         self.app_dir = Path(
-            QStandardPaths.writableLocation(QStandardPaths.AppConfigLocation)
+            QStandardPaths.writableLocation(QStandardPaths.StandardLocation.AppConfigLocation)
         )
         self.app_dir.mkdir(exist_ok=True)
         settings_file = f"{self.app_name}.ini"
         self.settings = QSettings(
-            self.app_dir.joinpath(settings_file).as_posix(), QSettings.IniFormat
+            self.app_dir.joinpath(settings_file).as_posix(), QSettings.Format.IniFormat
         )
         self.settings.sync()
         self.data = LiteDataStore(self.app_dir)
@@ -76,6 +77,3 @@ class AppSettings:
     def timer_value(self):
         app_config = self.load_configuration()
         return app_config.timer_value
-
-
-app = AppSettings()

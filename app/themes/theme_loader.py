@@ -1,7 +1,7 @@
 import logging
 
-from PyQt5.QtWidgets import QProxyStyle, qApp
-from PyQt5.QtCore import QFile, QFileInfo, QTextStream
+from PyQt6.QtWidgets import QProxyStyle, QApplication
+from PyQt6.QtCore import QFile, QFileInfo, QTextStream
 
 
 def styles_from_file(filename):
@@ -22,7 +22,7 @@ class ThemeLoader(QProxyStyle):
         filename = ":/themes/{}.qss".format(theme_mode)
 
         styles = styles_from_file(filename)
-        qApp.setStyleSheet(styles) if styles else self.log_error(filename)
+        QApplication.instance().setStyleSheet(styles) if styles else self.log_error(filename)
 
     def log_error(self, styles_file):
         logging.error(f"Unable to read file from {styles_file}")

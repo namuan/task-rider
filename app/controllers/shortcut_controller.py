@@ -1,5 +1,5 @@
-from PyQt5.QtGui import QKeySequence
-from PyQt5.QtWidgets import QShortcut
+from PyQt6.QtGui import QKeySequence
+from PyQt6.QtGui import QShortcut
 
 
 class ShortcutController:
