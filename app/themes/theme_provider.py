@@ -11,13 +11,13 @@ def is_dark():
 
 
 def configure_theme(app):
-    app.setWindowIcon(QIcon(":/icons/app.svg"))
+    app.setWindowIcon(QIcon("icons:app.svg"))
 
     app.setStyle(ThemeLoader())
     theme_mode = "dark" if is_dark() else "light"
     app.style().load_stylesheet(theme_mode)
 
-    QFontDatabase.addApplicationFont(":/fonts/JetBrainsMono-Regular.ttf")
+    QFontDatabase.addApplicationFont("fonts:JetBrainsMono-Regular.ttf")
 
     current_font: QFont = QFont("JetBrains Mono")
     current_font.setPointSize(16)
@@ -29,4 +29,4 @@ def pyg_styles():
         return __pyg_styles
     else:
         pyg_theme = "dark" if is_dark() else "light"
-        return styles_from_file(":/themes/pyg-{}.css".format(pyg_theme))
+        return styles_from_file("themes:pyg-{}.css".format(pyg_theme))

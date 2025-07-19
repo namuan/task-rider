@@ -39,7 +39,7 @@ class Timer:
 class BellSound:
     def __init__(self):
         self.sound = QSoundEffect()
-        self.sound.setSource(QUrl.fromLocalFile(":/sounds/bell.wav"))
+        self.sound.setSource(QUrl.fromLocalFile("sounds:bell.wav"))
 
     def ring(self):
         self.sound.play()

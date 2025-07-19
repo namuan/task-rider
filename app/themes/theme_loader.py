@@ -1,13 +1,13 @@
 import logging
 
 from PyQt6.QtWidgets import QProxyStyle, QApplication
-from PyQt6.QtCore import QFile, QFileInfo, QTextStream
+from PyQt6.QtCore import QFile, QFileInfo, QTextStream, QIODevice
 
 
 def styles_from_file(filename):
     if QFileInfo(filename).exists():
         qss_file = QFile(filename)
-        qss_file.open(QFile.ReadOnly | QFile.Text)
+        qss_file.open(QIODevice.OpenModeFlag.ReadOnly | QIODevice.OpenModeFlag.Text)
         content = QTextStream(qss_file).readAll()
         return content
     else:
@@ -19,7 +19,7 @@ class ThemeLoader(QProxyStyle):
         super().__init__()
 
     def load_stylesheet(self, theme_mode):
-        filename = ":/themes/{}.qss".format(theme_mode)
+        filename = "themes:{}.qss".format(theme_mode)
 
         styles = styles_from_file(filename)
         QApplication.instance().setStyleSheet(styles) if styles else self.log_error(filename)

@@ -29,9 +29,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.app_settings = app_settings
         self.setupUi(self)
 
-        self.btn_add_task.setIcon(QIcon(":images/add-48.png"))
-        self.btn_toggle_timer.setIcon(QIcon(":images/start-48.png"))
-        self.btn_reset_timer.setIcon(QIcon(":images/reset-48.png"))
+        self.btn_add_task.setIcon(QIcon("images:add-48.png"))
+        self.btn_toggle_timer.setIcon(QIcon("images:start-48.png"))
+        self.btn_reset_timer.setIcon(QIcon("images:reset-48.png"))
 
         # Initialise controllers
         self.main_controller = MainWindowController(self, app_settings)
