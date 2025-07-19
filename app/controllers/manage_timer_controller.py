@@ -1,4 +1,5 @@
 from PyQt6.QtCore import QTimer, QUrl
+from PyQt6.QtGui import QIcon
 from PyQt6.QtMultimedia import QSoundEffect
 
 
@@ -96,8 +97,12 @@ class ManageTimerController:
     def update_button_text(self):
         if self.timer_on:
             self.parent.btn_toggle_timer.setText("Pause")
+            self.parent.btn_toggle_timer.setIcon(QIcon("images:pause-48.png"))
+            self.parent.btn_reset_timer.setEnabled(False)
         else:
             self.parent.btn_toggle_timer.setText("Start")
+            self.parent.btn_toggle_timer.setIcon(QIcon("images:start-48.png"))
+            self.parent.btn_reset_timer.setEnabled(True)
 
     def convert_to_minutes(self, seconds):
         return "{}:{:02.0f}".format(int(seconds / 60), seconds % 60)
