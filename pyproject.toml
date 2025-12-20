@@ -1,0 +1,38 @@
+[project]
+name = "task-rider"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "PyQt6",
+    "darkdetect",
+    "attrs",
+    "cattrs",
+    "dataset",
+    "schedule",
+]
+
+[dependency-groups]
+dev = [
+    "black",
+    "flake8",
+    "ruff>=0.14.10",
+]
+build = [
+    "pyqt-distutils",
+    "PyInstaller>=3.6",
+]
+
+[project.scripts]
+task-rider = "app.__main__:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.uv]
+package = true
+
+[tool.setuptools]
+packages = ["app"]

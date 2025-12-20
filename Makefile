@@ -2,56 +2,50 @@ export PROJECTNAME=$(shell basename "$(PWD)")
 
 .SILENT: ;               # no need for @
 
-release: ## Prints release process
-	echo "Update version in app/__init__.py and .travis.yml"
-	echo "Commit with Preparing Release x.x.x"
-	echo "Wait for Travis to create a new release for task-rider project"
-	echo "cd task-rider-releases"
-	echo "Update version in .appveyor.yml and .travis.yml"
-	echo "Commit and Push task-rider-releases to create a new Github and Windows release"
-	echo "Prepare OSX Release by following README in task-rider-releases project"
+install: ## Install the virtual environment and install the pre-commit hooks
+	@echo "🚀 Creating virtual environment using uv"
+	@uv sync
+	@uv run pre-commit install
 
-clean-pyc: ## remove Python file artifacts
-	find . -name '*.pyc' -exec rm -f {} +
-	find . -name '*.pyo' -exec rm -f {} +
-	find . -name '*~' -exec rm -f {} +
-	find . -name '__pycache__' -exec rm -fr {} +
-
-clean: clean-pyc ## Clean package
-	rm -rf build dist
+clean: ## Clean build artifacts
+	@echo "🚀 Removing build artifacts"
+	@find . -type f -name "*.pyc" -delete
+	@find . -type d -name "__pycache__" -delete
+	@find . -type d -name "*.egg-info" -delete
+	@rm -rf build/ dist/
 
 black: ## Runs black for code formatting
-	black app --exclude generated
+	uv run -- black app --exclude generated
 
 lint: black ## Runs Flake8 for linting
-	flake8 app
+	uv run -- flake8 app
 
 setup: clean ## Re-initiates virtualenv
-	rm -rf venv
-	python3 -m venv venv
-	./venv/bin/python3 -m pip install -r requirements/dev.txt
+	rm -rf .venv
+	uv sync --group dev
 
 deps: ## Reinstalls dependencies
-	./venv/bin/python3 -m pip install -r requirements/dev.txt
+	uv sync --group dev
 
 uic: res ## Converts ui files in resources/views to python
-	for i in `ls resources/views/*.ui`; do FNAME=`basename $${i} ".ui"`; ./venv/bin/pyuic6 $${i} > "app/generated/$${FNAME}_ui.py"; done
+	for i in `ls resources/views/*.ui`; do FNAME=`basename $${i} ".ui"`; uv run -- pyuic6 $${i} > "app/generated/$${FNAME}_ui.py"; done
 
 res: ## Generates and compresses resource listed in resources/resources.qrc
 	echo "Not supported in PyQt6"
 
-package: clean ## Rebuilds venv and packages app
-	./venv/bin/python3 -m pip install -r requirements/build.txt
-	export PYTHONPATH=`pwd`:$PYTHONPATH && ./venv/bin/python3 setup.py bdist_app
+package: clean ## Run installer
+	@uv run pyinstaller main.spec --clean
 
 install-macosx: package ## Installs application in users Application folder
 	./scripts/install-macosx.sh TaskRider.app
 
-run: ## Runs the application
-	export PYTHONPATH=`pwd`:$PYTHONPATH && ./venv/bin/python3 app/__main__.py
+ICON_PNG ?= assets/$(PROJECTNAME)-icon.png
 
-icns: ## Generates icon files from svg
-	echo "Run ./mk-icns.sh resources/icons/app.svg app"
+icons: ## Generate ICNS and ICO files from the PNG logo
+	@bash assets/generate-icons.sh $(ICON_PNG)
+
+run: ## Runs the application
+	uv run task-rider
 
 context: clean ## Build context file from application sources
 	echo "Generating context"

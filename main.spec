@@ -2,6 +2,11 @@
 
 block_cipher = None
 
+import os
+import sys
+
+sys.path.insert(0, os.path.abspath(os.getcwd()))
+
 from app import __version__, __appname__, __desktopid__, __description__
 
 a = Analysis(['bin/app'],
@@ -30,7 +35,7 @@ exe = EXE(pyz,
           strip=False,
           upx=True,
           console=False,
-          icon='resources\\icons\\app.ico')
+          icon='assets/icon.ico')
 
 coll = COLLECT(exe,
                a.binaries,
@@ -42,7 +47,7 @@ coll = COLLECT(exe,
 
 app = BUNDLE(coll,
              name='{}.app'.format(__appname__),
-             icon='resources/icons/app.icns',
+             icon='assets/icon.icns',
              bundle_identifier=__desktopid__,
              info_plist={
                 'CFBundleName': __appname__,

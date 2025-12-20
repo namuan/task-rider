@@ -1,6 +1,0 @@
-PyQt6
-darkdetect
-attrs
-cattrs
-dataset
-schedule

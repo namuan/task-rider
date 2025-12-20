@@ -6,11 +6,11 @@ Simple todo list with Pomodoro timer
 
 ### Development
 
-You'll need Python3.6+ to run this application.
+You'll need Python3.12+ to run this application.
 
 The following make commands can be used for setting up virtual env and running the application.
 
-Setup a new virtual env in venv folder and install all the dependencies listed in requirements/dev.txt
+Setup a new virtual env in `.venv` and install all dependencies from `pyproject.toml`
 
 ```
 $ make setup
@@ -38,7 +38,7 @@ res                            Generates and compresses resource file
 run                            Runs the application
 setup                          Setup virtual environment and install dependencies
 uic                            Converts ui files to python
-venv                           Re-initiates virtualenv
+deps                           Reinstalls dependencies
 ```
 
 ### Credits
