@@ -8,6 +8,11 @@ import sys
 sys.path.insert(0, os.path.abspath(os.getcwd()))
 
 from app import __version__, __appname__, __desktopid__, __description__
+from PyInstaller.utils.hooks import collect_submodules
+
+hiddenimports = []
+hiddenimports += collect_submodules("dataset")
+hiddenimports += collect_submodules("pyremindkit")
 
 a = Analysis(['bin/app'],
              pathex=['.'],
@@ -19,7 +24,7 @@ a = Analysis(['bin/app'],
                 ('resources/themes/*', 'resources/themes'),
                 ('resources/sounds/*', 'resources/sounds'),
              ],
-             hiddenimports=[],
+             hiddenimports=hiddenimports,
              hookspath=None,
              runtime_hooks=None,
              excludes=None,
@@ -35,6 +40,7 @@ exe = EXE(pyz,
           strip=False,
           upx=True,
           console=False,
+          entitlements_file='entitlements.plist',
           icon='assets/icon.ico')
 
 coll = COLLECT(exe,
@@ -54,6 +60,8 @@ app = BUNDLE(coll,
                 'CFBundleVersion': __version__,
                 'CFBundleShortVersionString': __version__,
                 'NSPrincipalClass': 'NSApplication',
-                'NSHighResolutionCapable': 'True'
+                'NSHighResolutionCapable': 'True',
+                'NSRemindersUsageDescription': 'Task Rider needs access to Reminders to sync tasks.',
+                'NSCalendarsUsageDescription': 'Task Rider needs access to Calendars to sync tasks.'
                 }
              )

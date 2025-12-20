@@ -76,7 +76,7 @@ class LiteDataStore:
     def get_task_entity(self, task_id):
         table = self.db[TASK_ENTITY_RECORD_TYPE]
         entity = table.find_one(task_id=task_id)
-        return TaskEntity.from_dict(entity)
+        return TaskEntity.from_dict(entity) if entity else None
 
     def get_top_task(self):
         table = self.db[TASK_ENTITY_RECORD_TYPE]

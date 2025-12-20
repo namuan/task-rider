@@ -45,6 +45,7 @@ class TaskState(Enum):
 class TaskEntity(BaseEntity):
     id: str
     task_title: str
+    reminder_id: str = None
     order: int = 0
     added_time: datetime = datetime.now()
     done_time: datetime = None
@@ -69,6 +70,7 @@ class TaskEntity(BaseEntity):
         return TaskEntity(
             id=dict_obj.get("task_id"),
             task_title=dict_obj.get("task_title"),
+            reminder_id=dict_obj.get("reminder_id"),
             task_state=dict_obj.get("task_state"),
             added_time=dict_obj.get("added_time"),
             done_time=dict_obj.get("done_time"),
@@ -80,6 +82,7 @@ class TaskEntity(BaseEntity):
             name=TASK_ENTITY_RECORD_TYPE,
             task_id=self.id,
             task_title=self.task_title,
+            reminder_id=self.reminder_id,
             task_state=str(self.task_state),
             added_time=self.added_time,
             done_time=self.done_time,

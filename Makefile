@@ -1,6 +1,6 @@
 export PROJECTNAME=$(shell basename "$(PWD)")
 
-.SILENT: ;               # no need for @
+.PHONY: $(shell grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk -F: '{print $$1}')
 
 install: ## Install the virtual environment and install the pre-commit hooks
 	@echo "🚀 Creating virtual environment using uv"
@@ -18,11 +18,11 @@ black: ## Runs black for code formatting
 	uv run -- black app --exclude generated
 
 lint: black ## Runs Flake8 for linting
-	uv run -- flake8 app
+	uv run -- flake8 app --max-line-length 120 --exclude app/generated
 
-setup: clean ## Re-initiates virtualenv
-	rm -rf .venv
-	uv sync --group dev
+setup: ## Re-initiates virtualenv
+	@make install-macosx
+	@echo "Installation completed"
 
 deps: ## Reinstalls dependencies
 	uv sync --group dev

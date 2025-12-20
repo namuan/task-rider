@@ -16,6 +16,7 @@ from app.controllers import (
     OverlayController,
     TimeReportController,
     RefreshScreenController,
+    RemindersController,
 )
 from app.generated.MainWindow_ui import Ui_MainWindow
 from app.settings.app_settings import AppSettings
@@ -43,6 +44,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.overlay_controller = OverlayController(self, app_settings)
         self.time_report_controller = TimeReportController(self, app_settings)
         self.refresh_screen_controller = RefreshScreenController(self, app_settings)
+        self.reminders_controller = RemindersController(self, app_settings)
 
         # Initialise components
         self.shortcut_controller.init_items()
@@ -61,7 +63,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     @staticmethod
     def log_uncaught_exceptions(cls, exc, tb) -> None:
         logging.critical("".join(traceback.format_tb(tb)))
-        logging.critical("{0}: {1}".format(cls, exc))
+        logging.critical("{}: {}".format(cls, exc))
 
     def closeEvent(self, event: QCloseEvent):
         logging.info("Received close event")
@@ -69,7 +71,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.main_controller.shutdown()
         try:
             QApplication.instance().exit(0)
-        except:
+        except Exception:
             pass
 
     def replace_widget(self, selected_widget):

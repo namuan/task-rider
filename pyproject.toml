@@ -10,18 +10,17 @@ dependencies = [
     "attrs",
     "cattrs",
     "dataset",
+    "pyremindkit@git+https://github.com/namuan/pyremindkit",
     "schedule",
+    "pyobjc",
 ]
 
 [dependency-groups]
 dev = [
     "black",
     "flake8",
+    "pyinstaller>=6.17.0",
     "ruff>=0.14.10",
-]
-build = [
-    "pyqt-distutils",
-    "PyInstaller>=3.6",
 ]
 
 [project.scripts]
