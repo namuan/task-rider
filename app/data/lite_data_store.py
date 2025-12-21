@@ -78,6 +78,11 @@ class LiteDataStore:
         entity = table.find_one(task_id=task_id)
         return TaskEntity.from_dict(entity) if entity else None
 
+    def get_task_entity_by_reminder_id(self, reminder_id: str):
+        table = self.db[TASK_ENTITY_RECORD_TYPE]
+        entity = table.find_one(reminder_id=reminder_id)
+        return TaskEntity.from_dict(entity) if entity else None
+
     def get_top_task(self):
         table = self.db[TASK_ENTITY_RECORD_TYPE]
         entity = table.find_one(task_state=str(TaskState.NEW), order_by="order")

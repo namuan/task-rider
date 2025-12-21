@@ -1,12 +1,14 @@
 import logging
 import os
 import sys
+from datetime import datetime, timedelta
 
 from PyQt6.QtCore import QUrl as QtQUrl
 from PyQt6.QtGui import QDesktopServices
 from PyQt6.QtWidgets import QMessageBox
 
-from app.data.entities import TaskState
+from app.data.entities import TaskEntity, TaskState
+from app.utils.uuid_utils import gen_uuid
 
 
 class RemindersController:
@@ -97,6 +99,94 @@ class RemindersController:
             if not getattr(task_entity, "reminder_id", None):
                 self.sync_task(task_entity)
 
+    def refresh_from_apple_reminders(self):
+        if not self.ensure_remindkit():
+            return
+
+        try:
+            reminders = self._get_default_calendar_reminders()
+        except Exception:
+            logging.exception("Failed to fetch reminders")
+            return
+
+        updated_count = 0
+        created_count = 0
+
+        for reminder in reminders:
+            reminder_id = getattr(reminder, "id", None)
+            title = (getattr(reminder, "title", None) or "").strip()
+            is_completed = bool(getattr(reminder, "is_completed", False))
+            notes = getattr(reminder, "notes", None) or ""
+
+            task_entity = None
+            if reminder_id:
+                task_entity = self.app.data.get_task_entity_by_reminder_id(reminder_id)
+
+            notes_task_id = self._task_id_from_notes(notes)
+            if not task_entity and notes_task_id:
+                task_entity = self.app.data.get_task_entity(notes_task_id)
+
+            if task_entity:
+                changed = False
+                if (
+                    reminder_id
+                    and getattr(task_entity, "reminder_id", None) != reminder_id
+                ):
+                    task_entity.reminder_id = reminder_id
+                    changed = True
+
+                if title and task_entity.task_title != title:
+                    task_entity.task_title = title
+                    changed = True
+
+                current_state = self._normalize_task_state(
+                    getattr(task_entity, "task_state", None)
+                )
+                desired_state = TaskState.DONE if is_completed else TaskState.NEW
+                if current_state != desired_state:
+                    if desired_state == TaskState.DONE:
+                        task_entity.mark_as_done()
+                    else:
+                        task_entity.mark_as_new()
+                    changed = True
+
+                if changed:
+                    self._suppressed_task_ids.add(task_entity.id)
+                    try:
+                        self.app.data.update_task(task_entity)
+                    finally:
+                        self._suppressed_task_ids.discard(task_entity.id)
+                    updated_count += 1
+                continue
+
+            if not reminder_id:
+                continue
+
+            task_id = gen_uuid()
+            task_title = title or "Untitled reminder"
+            last_new_task = self.app.data.get_last_task(TaskState.NEW)
+            task_entity = TaskEntity(
+                id=task_id,
+                task_title=task_title,
+                reminder_id=reminder_id,
+                order=last_new_task.order + 1 if last_new_task else 1,
+            )
+            if is_completed:
+                task_entity.mark_as_done()
+
+            self._suppressed_task_ids.add(task_entity.id)
+            try:
+                self.app.data.update_task(task_entity)
+            finally:
+                self._suppressed_task_ids.discard(task_entity.id)
+            created_count += 1
+
+        logging.info(
+            "Refreshed reminders from Apple Reminders. Updated: %s, Created: %s",
+            updated_count,
+            created_count,
+        )
+
     def sync_task(self, task_entity):
         if not self.ensure_remindkit():
             return
@@ -148,4 +238,44 @@ class RemindersController:
         if isinstance(task_state, str):
             name = task_state.split(".")[-1]
             return TaskState[name] if name in TaskState.__members__ else None
+        return None
+
+    def _try_get_reminders(
+        self, get_reminders, kwargs_candidates: list[dict[str, object]]
+    ):
+        for kwargs in kwargs_candidates:
+            try:
+                return list(get_reminders(**kwargs)), kwargs
+            except TypeError:
+                continue
+        return [], {}
+
+    def _get_default_calendar_reminders(self):
+        tomorrow = datetime.now() + timedelta(days=1)
+        tomorrow = tomorrow.replace(hour=0, minute=0, second=0, microsecond=0)
+        reminders = list(
+            self.remind_kit.get_reminders(due_before=tomorrow, is_completed=False)
+        )
+        logging.info(f"Found {len(reminders)} incomplete reminders due before tomorrow")
+        return reminders
+
+    def _task_id_from_notes(self, notes: str) -> str | None:
+        prefix = "task-rider:"
+        if not isinstance(notes, str):
+            return None
+        for line in notes.splitlines():
+            line = line.strip()
+            if line.startswith(prefix):
+                return line.removeprefix(prefix).strip() or None
+        return None
+
+    def _reminder_due_date(self, reminder) -> datetime | None:
+        due_date = getattr(reminder, "due_date", None)
+        if isinstance(due_date, datetime):
+            return due_date
+        if isinstance(due_date, str):
+            try:
+                return datetime.fromisoformat(due_date.replace("Z", "+00:00"))
+            except ValueError:
+                return None
         return None

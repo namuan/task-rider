@@ -3,7 +3,8 @@ import traceback
 
 import sys
 from PyQt6 import QtCore
-from PyQt6.QtGui import QCloseEvent, QIcon
+from PyQt6.QtCore import QUrl
+from PyQt6.QtGui import QAction, QCloseEvent, QDesktopServices, QIcon
 from PyQt6.QtWidgets import QMainWindow, QApplication, QWidget
 
 from app.controllers import (
@@ -51,6 +52,29 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # Initialise Sub-Systems
         sys.excepthook = MainWindow.log_uncaught_exceptions
+        self._init_menu_bar()
+
+    def _init_menu_bar(self):
+        menu_bar = self.menuBar()
+        file_menu = menu_bar.addMenu("File")
+
+        refresh_reminders_action = QAction(
+            "Refresh reminders from Apple Reminders", self
+        )
+        refresh_reminders_action.triggered.connect(
+            self.reminders_controller.refresh_from_apple_reminders
+        )
+        file_menu.addAction(refresh_reminders_action)
+
+        open_logs_action = QAction("Open logs directory", self)
+        open_logs_action.triggered.connect(self.open_logs_directory)
+        file_menu.addAction(open_logs_action)
+
+    def open_logs_directory(self):
+        logs_dir = getattr(self.app_settings, "app_dir", None)
+        if not logs_dir:
+            return
+        QDesktopServices.openUrl(QUrl.fromLocalFile(logs_dir.as_posix()))
 
     # Main Window events
     def resizeEvent(self, event):
