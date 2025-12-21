@@ -24,6 +24,7 @@ class RemindersController:
     def init(self):
         if not self.ensure_remindkit():
             return
+        self.refresh_from_apple_reminders()
         self.sync_missing_reminders()
 
     def ensure_remindkit(self) -> bool:

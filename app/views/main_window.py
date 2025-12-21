@@ -4,7 +4,7 @@ import traceback
 import sys
 from PyQt6 import QtCore
 from PyQt6.QtCore import QUrl
-from PyQt6.QtGui import QAction, QCloseEvent, QDesktopServices, QIcon
+from PyQt6.QtGui import QAction, QCloseEvent, QDesktopServices, QIcon, QKeySequence
 from PyQt6.QtWidgets import QMainWindow, QApplication, QWidget
 
 from app.controllers import (
@@ -61,6 +61,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         refresh_reminders_action = QAction(
             "Refresh reminders from Apple Reminders", self
         )
+        refresh_reminders_action.setShortcut(QKeySequence("Ctrl+Shift+R"))
         refresh_reminders_action.triggered.connect(
             self.reminders_controller.refresh_from_apple_reminders
         )
