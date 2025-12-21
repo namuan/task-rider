@@ -9,7 +9,6 @@ dependencies = [
     "darkdetect",
     "attrs",
     "cattrs",
-    "dataset",
     "pyremindkit@git+https://github.com/namuan/pyremindkit",
     "schedule",
     "pyobjc",

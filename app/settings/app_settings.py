@@ -6,7 +6,7 @@ from typing import Any, Union
 from PyQt6.QtCore import QSettings, QStandardPaths
 from PyQt6.QtWidgets import QApplication
 
-from app.data import LiteDataStore
+from app.data import RemindersTaskService
 from app.settings.app_config import AppConfig
 
 
@@ -25,7 +25,7 @@ class AppSettings:
                 QStandardPaths.StandardLocation.DocumentsLocation
             )
         )
-        self.data: LiteDataStore = None
+        self.data: RemindersTaskService = None
 
     def init(self):
         self.app_name = QApplication.instance().applicationName().lower()
@@ -40,7 +40,7 @@ class AppSettings:
             self.app_dir.joinpath(settings_file).as_posix(), QSettings.Format.IniFormat
         )
         self.settings.sync()
-        self.data = LiteDataStore(self.app_dir)
+        self.data = RemindersTaskService()
 
     def init_logger(self):
         log_file = f"{self.app_name}.log"

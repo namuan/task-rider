@@ -11,7 +11,6 @@ from app import __version__, __appname__, __desktopid__, __description__
 from PyInstaller.utils.hooks import collect_submodules
 
 hiddenimports = []
-hiddenimports += collect_submodules("dataset")
 hiddenimports += collect_submodules("pyremindkit")
 
 a = Analysis(['bin/app'],

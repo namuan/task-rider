@@ -1,9 +1,6 @@
 import logging
 from datetime import datetime
 
-from app.data.entities import TimeReportEntity
-from app.utils.uuid_utils import gen_uuid
-
 
 class TimeReportController:
     def __init__(self, parent, app):
@@ -16,22 +13,30 @@ class TimeReportController:
 
     def log_start_time(self):
         task_entity = self.app.data.get_top_task()
-        logging.info("Logging start time for task : {}".format(task_entity))
-        time_report: TimeReportEntity = TimeReportEntity(
-            report_id=gen_uuid(),
-            task_id=task_entity.id,
-            task_title=task_entity.task_title,
-            timer_start=datetime.now(),
+        task_title = getattr(task_entity, "task_title", "") if task_entity else ""
+        reminder_id = getattr(task_entity, "reminder_id", "") if task_entity else ""
+        started_at = datetime.now().isoformat()
+        logging.info(
+            'timer_start task_title="%s" reminder_id="%s" started_at="%s"',
+            self._escape_log_str(task_title),
+            self._escape_log_str(reminder_id),
+            started_at,
         )
-        self.app.data.update_time_report(time_report)
 
     def log_stop_time(self):
         task_entity = self.app.data.get_top_task()
-        logging.info("Logging end time for task : {}".format(task_entity))
-        time_report: TimeReportEntity = TimeReportEntity(
-            report_id=gen_uuid(),
-            task_id=task_entity.id,
-            task_title=task_entity.task_title,
-            timer_stop=datetime.now(),
+        task_title = getattr(task_entity, "task_title", "") if task_entity else ""
+        reminder_id = getattr(task_entity, "reminder_id", "") if task_entity else ""
+        stopped_at = datetime.now().isoformat()
+        logging.info(
+            'timer_stop task_title="%s" reminder_id="%s" stopped_at="%s"',
+            self._escape_log_str(task_title),
+            self._escape_log_str(reminder_id),
+            stopped_at,
         )
-        self.app.data.update_time_report(time_report)
+
+    def _escape_log_str(self, value: object) -> str:
+        if value is None:
+            return ""
+        s = str(value)
+        return s.replace("\\", "\\\\").replace('"', '\\"')

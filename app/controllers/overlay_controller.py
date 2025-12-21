@@ -18,6 +18,9 @@ class OverlayController:
 
     def display_overlay(self):
         top_task = self.app.data.get_top_task()
+        if not top_task:
+            self.overlay.hide()
+            return
         self.overlay.setTitle(top_task.task_title)
         self.overlay.show()
 
