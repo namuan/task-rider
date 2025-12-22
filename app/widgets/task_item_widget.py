@@ -24,7 +24,12 @@ class LineEditorEvents(QObject):
 
 class TaskItemWidget(QtWidgets.QWidget, Ui_TaskItemWidget):
     def __init__(
-        self, parent, task_entity, on_task_done_handler=None, on_task_save_handler=None
+        self,
+        parent,
+        task_entity,
+        on_task_done_handler=None,
+        on_task_save_handler=None,
+        on_task_snooze_handler=None,
     ):
         super().__init__(parent)
         self.setupUi(self)
@@ -47,10 +52,21 @@ class TaskItemWidget(QtWidgets.QWidget, Ui_TaskItemWidget):
                 )
             )
 
+        if on_task_snooze_handler:
+            self.btn_snooze.pressed.connect(
+                partial(
+                    on_task_snooze_handler,
+                    self.task_entity.id,
+                )
+            )
+        else:
+            self.btn_snooze.hide()
+
         self.txt_task_title.returnPressed.connect(self.on_save_task)
         self.lbl_task_title.setText(self.task_entity.task_title)
         self.lbl_task_title.setToolTip(self.task_entity.task_title)
         self.update_elided_text()
+        self.update_due_date_text()
 
     def get_task_id(self):
         return self.task_entity.id
@@ -80,3 +96,30 @@ class TaskItemWidget(QtWidgets.QWidget, Ui_TaskItemWidget):
             self.full_task_title, Qt.TextElideMode.ElideRight, available_width
         )
         self.lbl_task_title.setText(elided_text)
+
+    def update_due_date_text(self):
+        from datetime import datetime, timedelta
+
+        if not self.task_entity.due_date:
+            self.lbl_due_date.hide()
+            return
+
+        due_date = self.task_entity.due_date
+        now = datetime.now()
+
+        # Format the due date in a subtle, readable way
+        if due_date.date() == now.date():
+            # Today - show time
+            due_text = f"Due today at {due_date.strftime('%H:%M')}"
+        elif due_date.date() == (now + timedelta(days=1)).date():
+            # Tomorrow - show time
+            due_text = f"Due tomorrow at {due_date.strftime('%H:%M')}"
+        elif (due_date - now).days < 7:
+            # Within a week - show day name and time
+            due_text = f"Due {due_date.strftime('%A at %H:%M')}"
+        else:
+            # Further away - show date and time
+            due_text = f"Due {due_date.strftime('%b %d at %H:%M')}"
+
+        self.lbl_due_date.setText(due_text)
+        self.lbl_due_date.show()

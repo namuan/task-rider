@@ -62,10 +62,16 @@ class DisplayTasksView:
         task_widget = self.task_from_widget(item_widget)
         task_widget.edit_task()
 
-    def render_task_entity(self, task_entity, on_btn_task_done=None, on_task_save=None):
+    def render_task_entity(
+        self, task_entity, on_btn_task_done=None, on_task_save=None, on_task_snooze=None
+    ):
         logging.info("Adding a new task widget for {}".format(task_entity))
         task_widget = TaskItemWidget(
-            self.main_window, task_entity, on_btn_task_done, on_task_save
+            self.main_window,
+            task_entity,
+            on_btn_task_done,
+            on_task_save,
+            on_task_snooze,
         )
 
         task_widget_item = QtWidgets.QListWidgetItem(self.main_window.lst_tasks)

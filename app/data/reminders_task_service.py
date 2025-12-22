@@ -137,6 +137,22 @@ class RemindersTaskService:
 
         self.refresh()
 
+    def snooze_task(self, reminder_id: str, hours: int = 6) -> None:
+        """Snooze a task by updating its due date to now + specified hours."""
+        if not reminder_id:
+            return
+        if not self.ensure_access():
+            return
+
+        try:
+            new_due_date = datetime.now() + timedelta(hours=hours)
+            self._remind_kit.update_reminder(reminder_id, due_date=new_due_date)
+        except Exception:
+            logging.exception("Failed to snooze reminder")
+            return
+
+        self.refresh()
+
     def delete_task(self, reminder_id: str) -> None:
         if not reminder_id:
             return
