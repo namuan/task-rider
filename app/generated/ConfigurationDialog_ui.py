@@ -9,7 +9,7 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 
-class Ui_Configuration(object):
+class Ui_Configuration:
     def setupUi(self, Configuration):
         Configuration.setObjectName("Configuration")
         Configuration.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
@@ -32,6 +32,12 @@ class Ui_Configuration(object):
         self.txt_config_timer_value = QtWidgets.QLineEdit(parent=self.timer)
         self.txt_config_timer_value.setGeometry(QtCore.QRect(250, 20, 41, 20))
         self.txt_config_timer_value.setObjectName("txt_config_timer_value")
+        self.label_snooze_hours = QtWidgets.QLabel(parent=self.timer)
+        self.label_snooze_hours.setGeometry(QtCore.QRect(20, 50, 211, 20))
+        self.label_snooze_hours.setObjectName("label_snooze_hours")
+        self.txt_config_snooze_hours = QtWidgets.QLineEdit(parent=self.timer)
+        self.txt_config_snooze_hours.setGeometry(QtCore.QRect(250, 50, 41, 20))
+        self.txt_config_snooze_hours.setObjectName("txt_config_snooze_hours")
         self.tabWidget.addTab(self.timer, "")
         self.tab_4 = QtWidgets.QWidget()
         self.tab_4.setObjectName("tab_4")
@@ -49,8 +55,15 @@ class Ui_Configuration(object):
         self.retranslateUi(Configuration)
         self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(Configuration)
-        Configuration.setTabOrder(self.txt_config_timer_value, self.btn_save_configuration)
-        Configuration.setTabOrder(self.btn_save_configuration, self.btn_cancel_configuration)
+        Configuration.setTabOrder(
+            self.txt_config_timer_value, self.txt_config_snooze_hours
+        )
+        Configuration.setTabOrder(
+            self.txt_config_snooze_hours, self.btn_save_configuration
+        )
+        Configuration.setTabOrder(
+            self.btn_save_configuration, self.btn_cancel_configuration
+        )
         Configuration.setTabOrder(self.btn_cancel_configuration, self.tabWidget)
 
     def retranslateUi(self, Configuration):
@@ -58,8 +71,20 @@ class Ui_Configuration(object):
         Configuration.setWindowTitle(_translate("Configuration", "Settings"))
         self.label.setText(_translate("Configuration", "Timer Value (minutes):"))
         self.txt_config_timer_value.setText(_translate("Configuration", "10"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.timer), _translate("Configuration", "Timer"))
-        self.label_5.setText(_translate("Configuration", "Icons by <a href=\"https://icons8.com\">Icons8</a>"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), _translate("Configuration", "Credit"))
+        self.label_snooze_hours.setText(
+            _translate("Configuration", "Snooze Time (hours):")
+        )
+        self.txt_config_snooze_hours.setText(_translate("Configuration", "6"))
+        self.tabWidget.setTabText(
+            self.tabWidget.indexOf(self.timer), _translate("Configuration", "Timer")
+        )
+        self.label_5.setText(
+            _translate(
+                "Configuration", 'Icons by <a href="https://icons8.com">Icons8</a>'
+            )
+        )
+        self.tabWidget.setTabText(
+            self.tabWidget.indexOf(self.tab_4), _translate("Configuration", "Credit")
+        )
         self.btn_save_configuration.setText(_translate("Configuration", "OK"))
         self.btn_cancel_configuration.setText(_translate("Configuration", "Cancel"))

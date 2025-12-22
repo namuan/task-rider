@@ -37,6 +37,13 @@ class TaskItemWidget(QtWidgets.QWidget, Ui_TaskItemWidget):
         self.setLayout(self.horizontalLayout)
         self.txt_task_title.hide()
         self.btn_task_done.setIcon(QIcon("images:new-48.png"))
+        self.btn_snooze.setSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed
+        )
+        self.btn_snooze.setFixedSize(26, 26)
+        snooze_font = self.btn_snooze.font()
+        snooze_font.setPointSize(max(8, snooze_font.pointSize() - 1))
+        self.btn_snooze.setFont(snooze_font)
 
         self.task_entity = task_entity
         self.full_task_title = task_entity.task_title
@@ -68,6 +75,14 @@ class TaskItemWidget(QtWidgets.QWidget, Ui_TaskItemWidget):
         self.lbl_task_title.setToolTip(self.task_entity.task_title)
         self.update_elided_text()
         self.update_due_date_text()
+
+    def set_snooze_hours(self, hours: int) -> None:
+        try:
+            hours_int = int(hours)
+        except Exception:
+            hours_int = 6
+        unit = "hour" if hours_int == 1 else "hours"
+        self.btn_snooze.setToolTip(f"Snooze for {hours_int} {unit}")
 
     def get_task_id(self):
         return self.task_entity.id

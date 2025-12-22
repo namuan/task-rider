@@ -79,6 +79,7 @@ class DisplayTasksView:
 
         self.main_window.lst_tasks.addItem(task_widget_item)
         self.main_window.lst_tasks.setItemWidget(task_widget_item, task_widget)
+        return task_widget
 
     def render_completed_task_entity(self, task_entity, callback=None):
         logging.info("Adding a new completed task widget for {}".format(task_entity))

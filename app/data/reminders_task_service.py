@@ -144,9 +144,59 @@ class RemindersTaskService:
         if not self.ensure_access():
             return
 
+        current_time = datetime.now()
+        new_due_date = current_time + timedelta(hours=hours)
+
         try:
-            new_due_date = datetime.now() + timedelta(hours=hours)
-            self._remind_kit.update_reminder(reminder_id, due_date=new_due_date)
+            reminder = None
+            get_reminder_by_id = getattr(self._remind_kit, "get_reminder_by_id", None)
+            if callable(get_reminder_by_id):
+                try:
+                    reminder = get_reminder_by_id(reminder_id)
+                except Exception:
+                    reminder = None
+
+            due_date = self._reminder_due_date(reminder) if reminder else None
+            is_past_event = bool(due_date and due_date < current_time)
+
+            if is_past_event and reminder:
+                calendar_id = getattr(reminder, "calendar_id", None)
+                if not calendar_id:
+                    calendar_obj = getattr(reminder, "calendar", None)
+                    calendar_id = getattr(calendar_obj, "id", None)
+                if not calendar_id:
+                    calendar_id = self._default_calendar_id
+
+                title = (
+                    getattr(reminder, "title", None) or ""
+                ).strip() or "Untitled reminder"
+                kwargs = {"title": title, "calendar_id": calendar_id}
+                notes = getattr(reminder, "notes", None)
+                if notes:
+                    kwargs["notes"] = notes
+                priority = getattr(reminder, "priority", None)
+                if priority is not None:
+                    kwargs["priority"] = priority
+                kwargs["due_date"] = new_due_date
+
+                try:
+                    self._remind_kit.create_reminder(**kwargs)
+                except TypeError:
+                    kwargs.pop("due_date", None)
+                    self._remind_kit.create_reminder(**kwargs)
+
+                try:
+                    self._remind_kit.delete_reminder(reminder_id)
+                except Exception:
+                    logging.exception("Failed to delete original reminder after snooze")
+                    try:
+                        self._remind_kit.update_reminder(reminder_id, is_completed=True)
+                    except Exception:
+                        logging.exception(
+                            "Failed to complete original reminder after failed delete"
+                        )
+            else:
+                self._remind_kit.update_reminder(reminder_id, due_date=new_due_date)
         except Exception:
             logging.exception("Failed to snooze reminder")
             return

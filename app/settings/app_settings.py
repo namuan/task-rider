@@ -66,6 +66,7 @@ class AppSettings:
 
     def save_configuration(self, app_config: AppConfig):
         self.settings.setValue(AppConfig.TIMER_VALUE, app_config.timer_value)
+        self.settings.setValue(AppConfig.SNOOZE_HOURS, app_config.snooze_hours)
         self.settings.sync()
         self.data.app_events.config_changed.emit()
 
@@ -73,6 +74,9 @@ class AppSettings:
         app_config = AppConfig()
         app_config.timer_value = self.settings.value(
             AppConfig.TIMER_VALUE, app_config.timer_value
+        )
+        app_config.snooze_hours = self.settings.value(
+            AppConfig.SNOOZE_HOURS, app_config.snooze_hours
         )
         return app_config
 
@@ -85,3 +89,7 @@ class AppSettings:
     def timer_value(self):
         app_config = self.load_configuration()
         return app_config.timer_value
+
+    def snooze_hours(self):
+        app_config = self.load_configuration()
+        return app_config.snooze_hours
