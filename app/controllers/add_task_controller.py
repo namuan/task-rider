@@ -1,3 +1,6 @@
+from datetime import datetime, timedelta
+
+
 class AddTaskController:
     def __init__(self, parent, app):
         self.parent = parent
@@ -10,7 +13,8 @@ class AddTaskController:
     def add_task(self):
         task_title = self.parent.txt_task_title.text()
         if task_title.strip():
-            self.app.data.create_task(task_title)
+            due_date = datetime.now() + timedelta(hours=1)
+            self.app.data.create_task(task_title, due=due_date)
             self.parent.txt_task_title.clear()
 
     def prepare_entry(self):
