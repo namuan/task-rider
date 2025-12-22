@@ -58,7 +58,7 @@
       <string>Timer Value (minutes):</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="txt_config_timer_value">
+   <widget class="QLineEdit" name="txt_config_timer_value">
      <property name="geometry">
       <rect>
        <x>250</x>
@@ -69,6 +69,32 @@
      </property>
      <property name="text">
       <string>10</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_snooze_hours">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>50</y>
+       <width>211</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Snooze Time (hours):</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="txt_config_snooze_hours">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>50</y>
+       <width>41</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>6</string>
      </property>
     </widget>
    </widget>
@@ -119,7 +145,8 @@
   </widget>
  </widget>
  <tabstops>
-  <tabstop>txt_config_timer_value</tabstop>
+ <tabstop>txt_config_timer_value</tabstop>
+  <tabstop>txt_config_snooze_hours</tabstop>
   <tabstop>btn_save_configuration</tabstop>
   <tabstop>btn_cancel_configuration</tabstop>
   <tabstop>tabWidget</tabstop>

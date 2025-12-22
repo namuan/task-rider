@@ -20,6 +20,7 @@ class DisplayTasksController:
 
         # domain events
         self.app.data.app_events.task_updated.connect(self.refresh)
+        self.app.data.app_events.config_changed.connect(self.update_snooze_tooltips)
 
     def init(self):
         self.refresh()
@@ -44,15 +45,25 @@ class DisplayTasksController:
     def on_task_save(self, task_id, new_task_title):
         self.app.data.update_title(task_id, new_task_title)
 
+    def on_task_snooze(self, task_id):
+        self.app.data.snooze_task(task_id, hours=int(self.app.snooze_hours()))
+
     def refresh(self):
         self.view.clear()
         task_entities = self.app.data.get_tasks(TaskState.NEW)
         for task_entity in task_entities:
-            self.view.render_task_entity(
-                task_entity, self.on_task_done, self.on_task_save
+            task_widget = self.view.render_task_entity(
+                task_entity, self.on_task_done, self.on_task_save, self.on_task_snooze
             )
+            if task_widget and hasattr(task_widget, "set_snooze_hours"):
+                task_widget.set_snooze_hours(self.app.snooze_hours())
         completed_task_entities = self.app.data.get_tasks(
             TaskState.DONE, 5, "-done_time"
         )
         for task_entity in completed_task_entities:
             self.view.render_completed_task_entity(task_entity, self.on_task_reopen)
+
+    def update_snooze_tooltips(self):
+        for _, task_widget in self.view.widget_iterator():
+            if task_widget and hasattr(task_widget, "set_snooze_hours"):
+                task_widget.set_snooze_hours(self.app.snooze_hours())

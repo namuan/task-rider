@@ -28,7 +28,9 @@ class ConfigController:
     def form_to_object(self):
         config = AppConfig()
         config.timer_value = int(self.view.txt_config_timer_value.text())
+        config.snooze_hours = int(self.view.txt_config_snooze_hours.text())
         return config
 
     def object_to_form(self, app_config: AppConfig):
         self.view.txt_config_timer_value.setText(str(app_config.timer_value))
+        self.view.txt_config_snooze_hours.setText(str(app_config.snooze_hours))
