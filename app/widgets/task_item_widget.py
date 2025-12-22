@@ -1,4 +1,5 @@
 from functools import partial
+from datetime import datetime, timedelta
 
 from PyQt6 import QtWidgets, QtCore
 from PyQt6.QtCore import QObject, QEvent, Qt
@@ -52,7 +53,7 @@ class TaskItemWidget(QtWidgets.QWidget, Ui_TaskItemWidget):
                 )
             )
 
-        if on_task_snooze_handler:
+        if on_task_snooze_handler and self.task_entity.due_date:
             self.btn_snooze.pressed.connect(
                 partial(
                     on_task_snooze_handler,
@@ -98,14 +99,15 @@ class TaskItemWidget(QtWidgets.QWidget, Ui_TaskItemWidget):
         self.lbl_task_title.setText(elided_text)
 
     def update_due_date_text(self):
-        from datetime import datetime, timedelta
-
         if not self.task_entity.due_date:
             self.lbl_due_date.hide()
             return
 
         due_date = self.task_entity.due_date
         now = datetime.now()
+
+        # Check if the due date is in the past
+        is_overdue = due_date < now
 
         # Format the due date in a subtle, readable way
         if due_date.date() == now.date():
@@ -114,11 +116,11 @@ class TaskItemWidget(QtWidgets.QWidget, Ui_TaskItemWidget):
         elif due_date.date() == (now + timedelta(days=1)).date():
             # Tomorrow - show time
             due_text = f"Due tomorrow at {due_date.strftime('%H:%M')}"
-        elif (due_date - now).days < 7:
+        elif not is_overdue and (due_date - now).days < 7:
             # Within a week - show day name and time
             due_text = f"Due {due_date.strftime('%A at %H:%M')}"
         else:
-            # Further away - show date and time
+            # Further away or past due - show date and time
             due_text = f"Due {due_date.strftime('%b %d at %H:%M')}"
 
         self.lbl_due_date.setText(due_text)
