@@ -12,7 +12,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_TaskItemWidget(object):
     def setupUi(self, TaskItemWidget):
         TaskItemWidget.setObjectName("TaskItemWidget")
-        TaskItemWidget.resize(417, 50)
+        TaskItemWidget.resize(417, 70)
         font = QtGui.QFont()
         font.setPointSize(10)
         TaskItemWidget.setFont(font)
