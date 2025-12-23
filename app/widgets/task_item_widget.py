@@ -2,10 +2,41 @@ from functools import partial
 from datetime import datetime, timedelta
 
 from PyQt6 import QtWidgets, QtCore
-from PyQt6.QtCore import QObject, QEvent, Qt
+from PyQt6.QtCore import QObject, QEvent, Qt, QSize
 from PyQt6.QtGui import QIcon, QFontMetrics
 
 from app.generated.TaskItemWidget_ui import Ui_TaskItemWidget
+
+
+class BaseTaskItemWidget(QtWidgets.QWidget):
+    def sizeHint(self):
+        hint = super().sizeHint()
+        return QSize(hint.width(), max(hint.height(), self.minimumHeight()))
+
+    def minimumSizeHint(self):
+        hint = super().minimumSizeHint()
+        return QSize(hint.width(), max(hint.height(), self.minimumHeight()))
+
+    def init_elided_title(self, title: str) -> None:
+        self.set_task_title(title)
+        QtCore.QTimer.singleShot(0, self.update_elided_text)
+
+    def set_task_title(self, title: str) -> None:
+        self.full_task_title = title
+        self.lbl_task_title.setToolTip(title)
+        self.update_elided_text()
+
+    def update_elided_text(self):
+        font_metrics = QFontMetrics(self.lbl_task_title.font())
+        available_width = self.lbl_task_title.width()
+        elided_text = font_metrics.elidedText(
+            self.full_task_title, Qt.TextElideMode.ElideRight, available_width
+        )
+        self.lbl_task_title.setText(elided_text)
+
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        self.update_elided_text()
 
 
 class LineEditorEvents(QObject):
@@ -23,7 +54,7 @@ class LineEditorEvents(QObject):
         return super().eventFilter(source, event)
 
 
-class TaskItemWidget(QtWidgets.QWidget, Ui_TaskItemWidget):
+class TaskItemWidget(BaseTaskItemWidget, Ui_TaskItemWidget):
     MIN_ITEM_HEIGHT = 72
 
     def __init__(
@@ -69,7 +100,6 @@ class TaskItemWidget(QtWidgets.QWidget, Ui_TaskItemWidget):
         self.btn_snooze.setFont(snooze_font)
 
         self.task_entity = task_entity
-        self.full_task_title = task_entity.task_title
         self.on_task_save_handler = on_task_save_handler
 
         self.events = LineEditorEvents(self)
@@ -94,19 +124,8 @@ class TaskItemWidget(QtWidgets.QWidget, Ui_TaskItemWidget):
             self.btn_snooze.hide()
 
         self.txt_task_title.returnPressed.connect(self.on_save_task)
-        self.lbl_task_title.setText(self.task_entity.task_title)
-        self.lbl_task_title.setToolTip(self.task_entity.task_title)
-        self.update_elided_text()
+        self.init_elided_title(self.task_entity.task_title)
         self.update_due_date_text()
-        QtCore.QTimer.singleShot(0, self.update_elided_text)
-
-    def sizeHint(self):
-        hint = super().sizeHint()
-        return QtCore.QSize(hint.width(), max(hint.height(), self.minimumHeight()))
-
-    def minimumSizeHint(self):
-        hint = super().minimumSizeHint()
-        return QtCore.QSize(hint.width(), max(hint.height(), self.minimumHeight()))
 
     def set_snooze_hours(self, hours: int) -> None:
         try:
@@ -134,22 +153,9 @@ class TaskItemWidget(QtWidgets.QWidget, Ui_TaskItemWidget):
         self.horizontalLayout.setStretch(2, 0)
         self.horizontalLayout.setStretch(1, 1)
 
-    def resizeEvent(self, event):
-        super().resizeEvent(event)
-        self.update_elided_text()
-
     def on_save_task(self):
         self.on_task_save_handler(self.task_entity.id, self.txt_task_title.text())
-        self.full_task_title = self.txt_task_title.text()
-        self.update_elided_text()
-
-    def update_elided_text(self):
-        font_metrics = QFontMetrics(self.lbl_task_title.font())
-        available_width = self.lbl_task_title.width()
-        elided_text = font_metrics.elidedText(
-            self.full_task_title, Qt.TextElideMode.ElideRight, available_width
-        )
-        self.lbl_task_title.setText(elided_text)
+        self.set_task_title(self.txt_task_title.text())
 
     def update_due_date_text(self):
         if not self.task_entity.due_date:
