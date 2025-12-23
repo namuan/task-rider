@@ -24,6 +24,8 @@ class LineEditorEvents(QObject):
 
 
 class TaskItemWidget(QtWidgets.QWidget, Ui_TaskItemWidget):
+    MIN_ITEM_HEIGHT = 72
+
     def __init__(
         self,
         parent,
@@ -35,6 +37,7 @@ class TaskItemWidget(QtWidgets.QWidget, Ui_TaskItemWidget):
         super().__init__(parent)
         self.setupUi(self)
         self.setLayout(self.horizontalLayout)
+        self.setMinimumHeight(self.MIN_ITEM_HEIGHT)
         self.txt_task_title.hide()
         self.btn_task_done.setIcon(QIcon("images:new-48.png"))
         self.btn_snooze.setSizePolicy(
@@ -75,6 +78,14 @@ class TaskItemWidget(QtWidgets.QWidget, Ui_TaskItemWidget):
         self.lbl_task_title.setToolTip(self.task_entity.task_title)
         self.update_elided_text()
         self.update_due_date_text()
+
+    def sizeHint(self):
+        hint = super().sizeHint()
+        return QtCore.QSize(hint.width(), max(hint.height(), self.minimumHeight()))
+
+    def minimumSizeHint(self):
+        hint = super().minimumSizeHint()
+        return QtCore.QSize(hint.width(), max(hint.height(), self.minimumHeight()))
 
     def set_snooze_hours(self, hours: int) -> None:
         try:

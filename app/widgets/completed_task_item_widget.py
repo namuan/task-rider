@@ -1,17 +1,20 @@
 from functools import partial
 
 from PyQt6 import QtWidgets
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QSize
 from PyQt6.QtGui import QIcon, QFontMetrics
 
 from app.generated.CompletedTaskItemWidget_ui import Ui_CompletedTaskItemWidget
 
 
 class CompletedTaskItemWidget(QtWidgets.QWidget, Ui_CompletedTaskItemWidget):
+    MIN_ITEM_HEIGHT = 56
+
     def __init__(self, parent, task_entity, on_btn_task_reopen_pressed=None):
         super().__init__(parent)
         self.setupUi(self)
         self.setLayout(self.horizontalLayout)
+        self.setMinimumHeight(self.MIN_ITEM_HEIGHT)
         self.btn_task_reopen.setIcon(QIcon("images:done-48.png"))
         self.task_entity = task_entity
         self.full_task_title = task_entity.task_title
@@ -25,6 +28,14 @@ class CompletedTaskItemWidget(QtWidgets.QWidget, Ui_CompletedTaskItemWidget):
                     self.task_entity.id,
                 )
             )
+
+    def sizeHint(self):
+        hint = super().sizeHint()
+        return QSize(hint.width(), max(hint.height(), self.minimumHeight()))
+
+    def minimumSizeHint(self):
+        hint = super().minimumSizeHint()
+        return QSize(hint.width(), max(hint.height(), self.minimumHeight()))
 
     def update_elided_text(self):
         font_metrics = QFontMetrics(self.lbl_task_title.font())
