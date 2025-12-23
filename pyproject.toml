@@ -18,8 +18,8 @@ dependencies = [
 dev = [
     "black",
     "flake8",
-    "pyinstaller>=6.17.0",
-    "ruff>=0.14.10",
+    "pyinstaller",
+    "ruff",
 ]
 
 [project.scripts]

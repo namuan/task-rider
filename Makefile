@@ -24,8 +24,9 @@ setup: ## Re-initiates virtualenv
 	@make install-macosx
 	@echo "Installation completed"
 
-deps: ## Reinstalls dependencies
-	uv sync --group dev
+upgrade: ## Upgrade all dependencies to their latest versions
+	@echo "🚀 Upgrading all dependencies"
+	@uv lock --upgrade
 
 uic: res ## Converts ui files in resources/views to python
 	for i in `ls resources/views/*.ui`; do FNAME=`basename $${i} ".ui"`; uv run -- pyuic6 $${i} > "app/generated/$${FNAME}_ui.py"; done

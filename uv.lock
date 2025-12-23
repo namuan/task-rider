@@ -3083,8 +3083,8 @@ requires-dist = [
 dev = [
     { name = "black" },
     { name = "flake8" },
-    { name = "pyinstaller", specifier = ">=6.17.0" },
-    { name = "ruff", specifier = ">=0.14.10" },
+    { name = "pyinstaller" },
+    { name = "ruff" },
 ]
 
 [[package]]
