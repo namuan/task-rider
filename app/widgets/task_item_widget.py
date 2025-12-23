@@ -38,6 +38,26 @@ class TaskItemWidget(QtWidgets.QWidget, Ui_TaskItemWidget):
         self.setupUi(self)
         self.setLayout(self.horizontalLayout)
         self.setMinimumHeight(self.MIN_ITEM_HEIGHT)
+
+        for i in reversed(range(self.horizontalLayout.count())):
+            item = self.horizontalLayout.itemAt(i)
+            if item and item.spacerItem() is not None:
+                self.horizontalLayout.takeAt(i)
+
+        self.horizontalLayout.setStretch(1, 1)
+
+        self.lbl_task_title.setSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Expanding,
+            QtWidgets.QSizePolicy.Policy.Preferred,
+        )
+        self.lbl_due_date.setSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Expanding,
+            QtWidgets.QSizePolicy.Policy.Preferred,
+        )
+        self.txt_task_title.setSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Expanding,
+            QtWidgets.QSizePolicy.Policy.Preferred,
+        )
         self.txt_task_title.hide()
         self.btn_task_done.setIcon(QIcon("images:new-48.png"))
         self.btn_snooze.setSizePolicy(
@@ -78,6 +98,7 @@ class TaskItemWidget(QtWidgets.QWidget, Ui_TaskItemWidget):
         self.lbl_task_title.setToolTip(self.task_entity.task_title)
         self.update_elided_text()
         self.update_due_date_text()
+        QtCore.QTimer.singleShot(0, self.update_elided_text)
 
     def sizeHint(self):
         hint = super().sizeHint()
@@ -100,12 +121,18 @@ class TaskItemWidget(QtWidgets.QWidget, Ui_TaskItemWidget):
 
     def edit_task(self):
         self.lbl_task_title.hide()
+        self.lbl_due_date.hide()
+        self.horizontalLayout.setStretch(1, 0)
+        self.horizontalLayout.setStretch(2, 1)
         self.txt_task_title.setText(self.task_entity.task_title)
         self.txt_task_title.show()
 
     def dismiss_editor(self):
         self.txt_task_title.hide()
         self.lbl_task_title.show()
+        self.update_due_date_text()
+        self.horizontalLayout.setStretch(2, 0)
+        self.horizontalLayout.setStretch(1, 1)
 
     def resizeEvent(self, event):
         super().resizeEvent(event)
