@@ -64,11 +64,13 @@ class TaskItemWidget(BaseTaskItemWidget, Ui_TaskItemWidget):
         on_task_done_handler=None,
         on_task_save_handler=None,
         on_task_snooze_handler=None,
+        on_task_delete_handler=None,
     ):
         super().__init__(parent)
         self.setupUi(self)
         self.setLayout(self.horizontalLayout)
         self.setMinimumHeight(self.MIN_ITEM_HEIGHT)
+        self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
 
         for i in reversed(range(self.horizontalLayout.count())):
             item = self.horizontalLayout.itemAt(i)
@@ -101,6 +103,7 @@ class TaskItemWidget(BaseTaskItemWidget, Ui_TaskItemWidget):
 
         self.task_entity = task_entity
         self.on_task_save_handler = on_task_save_handler
+        self.on_task_delete_handler = on_task_delete_handler
 
         self.events = LineEditorEvents(self)
         self.txt_task_title.installEventFilter(self.events)
@@ -184,3 +187,19 @@ class TaskItemWidget(BaseTaskItemWidget, Ui_TaskItemWidget):
 
         self.lbl_due_date.setText(due_text)
         self.lbl_due_date.show()
+
+    def is_in_edit_mode(self):
+        """Check if the task is currently being edited."""
+        return self.txt_task_title.isVisible()
+
+    def keyPressEvent(self, event):
+        """Handle key press events for the task widget."""
+        if (
+            event.key() == QtCore.Qt.Key.Key_Backspace
+            and not self.is_in_edit_mode()
+            and self.on_task_delete_handler
+        ):
+            self.on_task_delete_handler(self.task_entity.id)
+            event.accept()
+        else:
+            super().keyPressEvent(event)

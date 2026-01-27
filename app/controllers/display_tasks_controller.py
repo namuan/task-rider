@@ -48,12 +48,19 @@ class DisplayTasksController:
     def on_task_snooze(self, task_id):
         self.app.data.snooze_task(task_id, hours=int(self.app.snooze_hours()))
 
+    def on_delete_task(self, task_id):
+        self.app.data.delete_task(task_id)
+
     def refresh(self):
         self.view.clear()
         task_entities = self.app.data.get_tasks(TaskState.NEW)
         for task_entity in task_entities:
             task_widget = self.view.render_task_entity(
-                task_entity, self.on_task_done, self.on_task_save, self.on_task_snooze
+                task_entity,
+                self.on_task_done,
+                self.on_task_save,
+                self.on_task_snooze,
+                self.on_delete_task,
             )
             if task_widget and hasattr(task_widget, "set_snooze_hours"):
                 task_widget.set_snooze_hours(self.app.snooze_hours())
