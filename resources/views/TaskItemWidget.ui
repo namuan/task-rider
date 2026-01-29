@@ -68,26 +68,36 @@
      </property>
     </spacer>
    </item>
-   <item>
-    <widget class="QToolButton" name="btn_notes">
-     <property name="text">
-      <string>📝</string>
-     </property>
-     <property name="toolTip">
-      <string>Edit Notes</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QToolButton" name="btn_snooze">
-     <property name="text">
-      <string>💤</string>
-     </property>
-     <property name="toolTip">
-      <string>Snooze for 6 hours</string>
-     </property>
-    </widget>
-   </item>
+    <item>
+     <widget class="QToolButton" name="btn_open_reminder">
+      <property name="text">
+       <string>📱</string>
+      </property>
+      <property name="toolTip">
+       <string>Open in Reminders</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QToolButton" name="btn_notes">
+      <property name="text">
+       <string>📝</string>
+      </property>
+      <property name="toolTip">
+       <string>Edit Notes</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QToolButton" name="btn_snooze">
+      <property name="text">
+       <string>💤</string>
+      </property>
+      <property name="toolTip">
+       <string>Snooze for 6 hours</string>
+      </property>
+     </widget>
+    </item>
   </layout>
  </widget>
  <resources/>

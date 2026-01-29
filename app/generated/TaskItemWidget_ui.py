@@ -46,6 +46,9 @@ class Ui_TaskItemWidget:
             QtWidgets.QSizePolicy.Policy.Minimum,
         )
         self.horizontalLayout.addItem(spacerItem)
+        self.btn_open_reminder = QtWidgets.QToolButton(parent=TaskItemWidget)
+        self.btn_open_reminder.setObjectName("btn_open_reminder")
+        self.horizontalLayout.addWidget(self.btn_open_reminder)
         self.btn_notes = QtWidgets.QToolButton(parent=TaskItemWidget)
         self.btn_notes.setObjectName("btn_notes")
         self.horizontalLayout.addWidget(self.btn_notes)
@@ -60,6 +63,10 @@ class Ui_TaskItemWidget:
         _translate = QtCore.QCoreApplication.translate
         TaskItemWidget.setWindowTitle(_translate("TaskItemWidget", "Form"))
         self.btn_task_done.setText(_translate("TaskItemWidget", "..."))
+        self.btn_open_reminder.setText(_translate("TaskItemWidget", "📱"))
+        self.btn_open_reminder.setToolTip(
+            _translate("TaskItemWidget", "Open in Reminders")
+        )
         self.btn_notes.setText(_translate("TaskItemWidget", "📝"))
         self.btn_notes.setToolTip(_translate("TaskItemWidget", "Edit Notes"))
         self.btn_snooze.setText(_translate("TaskItemWidget", "💤"))

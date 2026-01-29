@@ -57,3 +57,19 @@ class RemindersController:
 
     def refresh_from_apple_reminders(self):
         self.app.data.refresh()
+
+    def open_reminder(self, reminder_id: str):
+        """Open a specific reminder in the Apple Reminders app."""
+        if not reminder_id:
+            return
+
+        try:
+            if sys.platform == "darwin":
+                # Use the x-apple-reminder URL scheme to open a specific reminder
+                url = f"x-apple-reminderkit://REMCDReminder/{reminder_id}"
+                if not QDesktopServices.openUrl(QtQUrl(url)):
+                    logging.warning(f"Failed to open reminder {reminder_id}")
+            else:
+                logging.warning("Opening reminders is only supported on macOS")
+        except Exception:
+            logging.exception("Failed to open reminder")

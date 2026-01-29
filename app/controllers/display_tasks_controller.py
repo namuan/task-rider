@@ -59,6 +59,9 @@ class DisplayTasksController:
             new_notes = dialog.get_notes()
             self.app.data.update_notes(task_id, new_notes)
 
+    def on_open_reminder(self, task_id):
+        self.parent.reminders_controller.open_reminder(task_id)
+
     def refresh(self):
         self.view.clear()
         task_entities = self.app.data.get_tasks(TaskState.NEW)
@@ -70,6 +73,7 @@ class DisplayTasksController:
                 self.on_task_snooze,
                 self.on_delete_task,
                 self.on_task_notes,
+                self.on_open_reminder,
             )
             if task_widget and hasattr(task_widget, "set_snooze_hours"):
                 task_widget.set_snooze_hours(self.app.snooze_hours())
@@ -77,7 +81,9 @@ class DisplayTasksController:
             TaskState.DONE, 5, "-done_time"
         )
         for task_entity in completed_task_entities:
-            self.view.render_completed_task_entity(task_entity, self.on_task_reopen)
+            self.view.render_completed_task_entity(
+                task_entity, self.on_task_reopen, self.on_open_reminder
+            )
 
     def update_snooze_tooltips(self):
         for _, task_widget in self.view.widget_iterator():

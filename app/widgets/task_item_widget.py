@@ -66,6 +66,7 @@ class TaskItemWidget(BaseTaskItemWidget, Ui_TaskItemWidget):
         on_task_snooze_handler=None,
         on_task_delete_handler=None,
         on_task_notes_handler=None,
+        on_open_reminder_handler=None,
     ):
         super().__init__(parent)
         self.setupUi(self)
@@ -111,6 +112,13 @@ class TaskItemWidget(BaseTaskItemWidget, Ui_TaskItemWidget):
         self.btn_notes.setFixedSize(26, 26)
         self.btn_notes.setFont(snooze_font)
 
+        # Style open reminder button
+        self.btn_open_reminder.setSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed
+        )
+        self.btn_open_reminder.setFixedSize(26, 26)
+        self.btn_open_reminder.setFont(snooze_font)
+
         self.task_entity = task_entity
         self.on_task_save_handler = on_task_save_handler
         self.on_task_delete_handler = on_task_delete_handler
@@ -145,6 +153,16 @@ class TaskItemWidget(BaseTaskItemWidget, Ui_TaskItemWidget):
             )
         else:
             self.btn_notes.hide()
+
+        if on_open_reminder_handler:
+            self.btn_open_reminder.pressed.connect(
+                partial(
+                    on_open_reminder_handler,
+                    self.task_entity.id,
+                )
+            )
+        else:
+            self.btn_open_reminder.hide()
 
         self.txt_task_title.returnPressed.connect(self.on_save_task)
         self.init_elided_title(self.task_entity.task_title)

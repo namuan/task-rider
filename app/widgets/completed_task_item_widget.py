@@ -10,7 +10,13 @@ from app.widgets.task_item_widget import BaseTaskItemWidget
 class CompletedTaskItemWidget(BaseTaskItemWidget, Ui_CompletedTaskItemWidget):
     MIN_ITEM_HEIGHT = 56
 
-    def __init__(self, parent, task_entity, on_btn_task_reopen_pressed=None):
+    def __init__(
+        self,
+        parent,
+        task_entity,
+        on_btn_task_reopen_pressed=None,
+        on_open_reminder_handler=None,
+    ):
         super().__init__(parent)
         self.setupUi(self)
         self.setLayout(self.horizontalLayout)
@@ -22,6 +28,15 @@ class CompletedTaskItemWidget(BaseTaskItemWidget, Ui_CompletedTaskItemWidget):
             QtWidgets.QSizePolicy.Policy.Preferred,
         )
 
+        # Style open reminder button
+        self.btn_open_reminder.setSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed
+        )
+        self.btn_open_reminder.setFixedSize(26, 26)
+        btn_font = self.btn_open_reminder.font()
+        btn_font.setPointSize(max(8, btn_font.pointSize() - 1))
+        self.btn_open_reminder.setFont(btn_font)
+
         self.btn_task_reopen.setIcon(QIcon("images:done-48.png"))
         self.task_entity = task_entity
         self.init_elided_title(self.task_entity.task_title)
@@ -32,6 +47,16 @@ class CompletedTaskItemWidget(BaseTaskItemWidget, Ui_CompletedTaskItemWidget):
                     self.task_entity.id,
                 )
             )
+
+        if on_open_reminder_handler:
+            self.btn_open_reminder.pressed.connect(
+                partial(
+                    on_open_reminder_handler,
+                    self.task_entity.id,
+                )
+            )
+        else:
+            self.btn_open_reminder.hide()
 
     def get_task_id(self):
         return self.task_entity.id

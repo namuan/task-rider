@@ -70,6 +70,7 @@ class DisplayTasksView:
         on_task_snooze=None,
         on_task_delete=None,
         on_task_notes=None,
+        on_open_reminder=None,
     ):
         logging.info("Adding a new task widget for {}".format(task_entity))
         task_widget = TaskItemWidget(
@@ -80,6 +81,7 @@ class DisplayTasksView:
             on_task_snooze,
             on_task_delete,
             on_task_notes,
+            on_open_reminder,
         )
 
         task_widget_item = QtWidgets.QListWidgetItem(self.main_window.lst_tasks)
@@ -89,9 +91,13 @@ class DisplayTasksView:
         self.main_window.lst_tasks.setItemWidget(task_widget_item, task_widget)
         return task_widget
 
-    def render_completed_task_entity(self, task_entity, callback=None):
+    def render_completed_task_entity(
+        self, task_entity, callback=None, on_open_reminder=None
+    ):
         logging.info("Adding a new completed task widget for {}".format(task_entity))
-        task_widget = CompletedTaskItemWidget(self.main_window, task_entity, callback)
+        task_widget = CompletedTaskItemWidget(
+            self.main_window, task_entity, callback, on_open_reminder
+        )
 
         task_widget_item = QtWidgets.QListWidgetItem(self.main_window.lst_tasks)
         task_widget_item.setSizeHint(task_widget.sizeHint())
