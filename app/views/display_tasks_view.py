@@ -69,6 +69,7 @@ class DisplayTasksView:
         on_task_save=None,
         on_task_snooze=None,
         on_task_delete=None,
+        on_task_notes=None,
     ):
         logging.info("Adding a new task widget for {}".format(task_entity))
         task_widget = TaskItemWidget(
@@ -78,6 +79,7 @@ class DisplayTasksView:
             on_task_save,
             on_task_snooze,
             on_task_delete,
+            on_task_notes,
         )
 
         task_widget_item = QtWidgets.QListWidgetItem(self.main_window.lst_tasks)

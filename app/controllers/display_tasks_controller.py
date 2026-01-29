@@ -2,6 +2,7 @@ from PyQt6 import QtWidgets
 
 from app.data.entities import TaskState
 from app.views.display_tasks_view import DisplayTasksView
+from app.views.add_notes_dialog import AddNotesDialog
 
 
 class DisplayTasksController:
@@ -51,6 +52,13 @@ class DisplayTasksController:
     def on_delete_task(self, task_id):
         self.app.data.delete_task(task_id)
 
+    def on_task_notes(self, task_id):
+        current_notes = self.app.data.get_notes(task_id)
+        dialog = AddNotesDialog(self.parent, current_notes)
+        if dialog.exec():
+            new_notes = dialog.get_notes()
+            self.app.data.update_notes(task_id, new_notes)
+
     def refresh(self):
         self.view.clear()
         task_entities = self.app.data.get_tasks(TaskState.NEW)
@@ -61,6 +69,7 @@ class DisplayTasksController:
                 self.on_task_save,
                 self.on_task_snooze,
                 self.on_delete_task,
+                self.on_task_notes,
             )
             if task_widget and hasattr(task_widget, "set_snooze_hours"):
                 task_widget.set_snooze_hours(self.app.snooze_hours())

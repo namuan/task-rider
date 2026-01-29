@@ -69,6 +69,16 @@
     </spacer>
    </item>
    <item>
+    <widget class="QToolButton" name="btn_notes">
+     <property name="text">
+      <string>📝</string>
+     </property>
+     <property name="toolTip">
+      <string>Edit Notes</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QToolButton" name="btn_snooze">
      <property name="text">
       <string>💤</string>

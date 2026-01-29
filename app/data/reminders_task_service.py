@@ -217,6 +217,32 @@ class RemindersTaskService:
 
         self.refresh()
 
+    def get_notes(self, reminder_id: str) -> str:
+        if not reminder_id:
+            return ""
+        if not self.ensure_access():
+            return ""
+
+        try:
+            reminder = self._remind_kit.get_reminder_by_id(reminder_id)
+            return getattr(reminder, "notes", "") or ""
+        except Exception:
+            return ""
+
+    def update_notes(self, reminder_id: str, notes: str) -> None:
+        if not reminder_id:
+            return
+        if not self.ensure_access():
+            return
+
+        try:
+            self._remind_kit.update_reminder(reminder_id, notes=notes)
+        except Exception:
+            logging.exception("Failed to update reminder notes")
+            return
+
+        self.refresh()
+
     def get_tasks(self, task_state: TaskState, limit: int = 100, sort_key: str = ""):
         if task_state == TaskState.NEW:
             return list(self._incomplete_tasks)[:limit]

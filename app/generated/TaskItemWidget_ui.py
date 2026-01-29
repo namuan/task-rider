@@ -9,7 +9,7 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 
-class Ui_TaskItemWidget(object):
+class Ui_TaskItemWidget:
     def setupUi(self, TaskItemWidget):
         TaskItemWidget.setObjectName("TaskItemWidget")
         TaskItemWidget.resize(417, 50)
@@ -39,8 +39,16 @@ class Ui_TaskItemWidget(object):
         self.txt_task_title = QtWidgets.QLineEdit(parent=TaskItemWidget)
         self.txt_task_title.setObjectName("txt_task_title")
         self.horizontalLayout.addWidget(self.txt_task_title)
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(
+            40,
+            20,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+        )
         self.horizontalLayout.addItem(spacerItem)
+        self.btn_notes = QtWidgets.QToolButton(parent=TaskItemWidget)
+        self.btn_notes.setObjectName("btn_notes")
+        self.horizontalLayout.addWidget(self.btn_notes)
         self.btn_snooze = QtWidgets.QToolButton(parent=TaskItemWidget)
         self.btn_snooze.setObjectName("btn_snooze")
         self.horizontalLayout.addWidget(self.btn_snooze)
@@ -52,5 +60,7 @@ class Ui_TaskItemWidget(object):
         _translate = QtCore.QCoreApplication.translate
         TaskItemWidget.setWindowTitle(_translate("TaskItemWidget", "Form"))
         self.btn_task_done.setText(_translate("TaskItemWidget", "..."))
+        self.btn_notes.setText(_translate("TaskItemWidget", "📝"))
+        self.btn_notes.setToolTip(_translate("TaskItemWidget", "Edit Notes"))
         self.btn_snooze.setText(_translate("TaskItemWidget", "💤"))
         self.btn_snooze.setToolTip(_translate("TaskItemWidget", "Snooze for 6 hours"))

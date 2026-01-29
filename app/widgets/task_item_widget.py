@@ -65,6 +65,7 @@ class TaskItemWidget(BaseTaskItemWidget, Ui_TaskItemWidget):
         on_task_save_handler=None,
         on_task_snooze_handler=None,
         on_task_delete_handler=None,
+        on_task_notes_handler=None,
     ):
         super().__init__(parent)
         self.setupUi(self)
@@ -93,6 +94,8 @@ class TaskItemWidget(BaseTaskItemWidget, Ui_TaskItemWidget):
         )
         self.txt_task_title.hide()
         self.btn_task_done.setIcon(QIcon("images:new-48.png"))
+
+        # Style snooze button
         self.btn_snooze.setSizePolicy(
             QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed
         )
@@ -100,6 +103,13 @@ class TaskItemWidget(BaseTaskItemWidget, Ui_TaskItemWidget):
         snooze_font = self.btn_snooze.font()
         snooze_font.setPointSize(max(8, snooze_font.pointSize() - 1))
         self.btn_snooze.setFont(snooze_font)
+
+        # Style notes button
+        self.btn_notes.setSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed
+        )
+        self.btn_notes.setFixedSize(26, 26)
+        self.btn_notes.setFont(snooze_font)
 
         self.task_entity = task_entity
         self.on_task_save_handler = on_task_save_handler
@@ -125,6 +135,16 @@ class TaskItemWidget(BaseTaskItemWidget, Ui_TaskItemWidget):
             )
         else:
             self.btn_snooze.hide()
+
+        if on_task_notes_handler:
+            self.btn_notes.pressed.connect(
+                partial(
+                    on_task_notes_handler,
+                    self.task_entity.id,
+                )
+            )
+        else:
+            self.btn_notes.hide()
 
         self.txt_task_title.returnPressed.connect(self.on_save_task)
         self.init_elided_title(self.task_entity.task_title)
