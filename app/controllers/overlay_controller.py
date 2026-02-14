@@ -31,4 +31,8 @@ class OverlayController:
         self.parent.show()
 
     def on_focus_border_closed(self):
-        self.hide_overlay()
+        if (
+            hasattr(self.parent, "manage_timer_controller")
+            and self.parent.manage_timer_controller.timer_on
+        ):
+            self.parent.manage_timer_controller.toggle_timer()

@@ -1,4 +1,4 @@
-from PyQt6.QtCore import Qt, QRect
+from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QPainter, QColor, QPen, QFont
 from PyQt6.QtWidgets import QWidget, QPushButton, QApplication, QHBoxLayout, QLabel
 
@@ -16,6 +16,7 @@ class FocusBorderWidget(QWidget):
 
         self.border_color = QColor(0, 122, 255)
         self.border_width = 8
+        self.top_border_width = 45
         self.task_name = ""
         self.on_close_callback = on_close_callback
 
@@ -89,7 +90,7 @@ class FocusBorderWidget(QWidget):
             screen_geometry = screen.geometry()
             header_width = self.header_widget.sizeHint().width()
             x = (screen_geometry.width() - header_width) // 2
-            y = self.border_width + 5
+            y = self.top_border_width + 5
             self.header_widget.move(x, y)
 
     def showEvent(self, event):
@@ -101,17 +102,24 @@ class FocusBorderWidget(QWidget):
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
 
         rect = self.rect()
-        border_rect = QRect(
-            rect.x() + self.border_width // 2,
-            rect.y() + self.border_width // 2,
-            rect.width() - self.border_width,
-            rect.height() - self.border_width,
-        )
+        QPen(self.border_color)
+        painter.setPen(Qt.PenStyle.NoPen)
+        painter.setBrush(self.border_color)
 
-        pen = QPen(self.border_color)
-        pen.setWidth(self.border_width)
-        painter.setPen(pen)
-        painter.drawRect(border_rect)
+        painter.drawRect(rect.x(), rect.y(), rect.width(), self.top_border_width)
+        painter.drawRect(rect.x(), rect.y(), self.border_width, rect.height())
+        painter.drawRect(
+            rect.x(),
+            rect.y() + rect.height() - self.border_width,
+            rect.width(),
+            self.border_width,
+        )
+        painter.drawRect(
+            rect.x() + rect.width() - self.border_width,
+            rect.y(),
+            self.border_width,
+            rect.height(),
+        )
 
         painter.end()
 
