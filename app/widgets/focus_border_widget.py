@@ -6,7 +6,7 @@ from PyQt6.QtWidgets import QWidget, QPushButton, QApplication, QHBoxLayout, QLa
 
 
 class FocusBorderWidget(QWidget):
-    def __init__(self, on_close_callback=None):
+    def __init__(self, on_close_callback=None, target_screen=None):
         super().__init__()
         self.setWindowFlags(
             Qt.WindowType.FramelessWindowHint
@@ -22,10 +22,11 @@ class FocusBorderWidget(QWidget):
         self.task_name = ""
         self.on_close_callback = on_close_callback
         self._macos_properties_set = False
+        self._target_screen = target_screen
 
         self._setup_header()
 
-        screen = QApplication.primaryScreen()
+        screen = target_screen if target_screen else QApplication.primaryScreen()
         if screen:
             self.setGeometry(screen.geometry())
 
@@ -132,7 +133,9 @@ class FocusBorderWidget(QWidget):
         self._position_header()
 
     def _position_header(self):
-        screen = QApplication.primaryScreen()
+        screen = (
+            self._target_screen if self._target_screen else QApplication.primaryScreen()
+        )
         if screen:
             screen_geometry = screen.geometry()
             header_width = self.header_widget.sizeHint().width()
@@ -140,12 +143,12 @@ class FocusBorderWidget(QWidget):
             y = self.top_border_width + 5
             self.header_widget.move(x, y)
 
-    def showEvent(self, event):
-        super().showEvent(event)
+    def showEvent(self, a0):
+        super().showEvent(a0)
         self._setup_macos_window_properties()
         self._position_header()
 
-    def paintEvent(self, event):
+    def paintEvent(self, a0):
         painter = QPainter(self)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
 
@@ -171,6 +174,6 @@ class FocusBorderWidget(QWidget):
 
         painter.end()
 
-    def resizeEvent(self, event):
-        super().resizeEvent(event)
+    def resizeEvent(self, a0):
+        super().resizeEvent(a0)
         self._position_header()

@@ -114,7 +114,31 @@ app/
 - Keyboard shortcut to toggle border
 - Multi-monitor support (border on active monitor only)
 
+### Multi-Monitor Support
+
+The focus border now appears on all connected monitors simultaneously:
+
+**Implementation:**
+- `OverlayController` creates a `FocusBorderWidget` for each screen via `QApplication.screens()`
+- `FocusBorderWidget` accepts an optional `target_screen` parameter to position on specific screens
+- Monitors screen configuration changes via `QApplication.screenAdded` and `QApplication.screenRemoved` signals
+- All borders display the same task name and close synchronously
+
+**Changes to `OverlayController`:**
+- Replaced single `focus_border` with `focus_borders` list
+- Added `_create_focus_borders()` to initialize widgets for all screens
+- Added `_handle_screen_added()` to create border for new monitors
+- Added `_handle_screen_removed()` to clean up borders for removed monitors
+- Updated `display_overlay()` and `hide_overlay()` to manage all borders
+
+**Changes to `FocusBorderWidget`:**
+- Added `target_screen` constructor parameter
+- Uses target screen geometry instead of primary screen
+- Renamed internal `screen` attribute to `_target_screen` to avoid QWidget.screen() conflict
+
 ## Recent Updates
+
+### Multi-Monitor Support (Current)
 
 ### Task Label Background
 Added semi-transparent black background (`rgba(0, 0, 0, 0.7)`) with rounded corners and padding to the task label for better visibility against any screen content.
