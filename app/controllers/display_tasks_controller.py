@@ -77,6 +77,9 @@ class DisplayTasksController:
             )
             if task_widget and hasattr(task_widget, "set_snooze_hours"):
                 task_widget.set_snooze_hours(self.app.snooze_hours())
+            if task_widget and hasattr(task_widget, "set_has_notes"):
+                notes = self.app.data.get_notes(task_entity.id)
+                task_widget.set_has_notes(bool(notes and notes.strip()))
         completed_task_entities = self.app.data.get_tasks(
             TaskState.DONE, 5, "-done_time"
         )

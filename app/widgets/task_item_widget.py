@@ -176,6 +176,15 @@ class TaskItemWidget(BaseTaskItemWidget, Ui_TaskItemWidget):
         unit = "hour" if hours_int == 1 else "hours"
         self.btn_snooze.setToolTip(f"Snooze for {hours_int} {unit}")
 
+    def set_has_notes(self, has_notes: bool) -> None:
+        """Update the notes button to indicate whether notes exist."""
+        if has_notes:
+            self.btn_notes.setText("🗒️")
+            self.btn_notes.setToolTip("Edit Notes (has notes)")
+        else:
+            self.btn_notes.setText("📝")
+            self.btn_notes.setToolTip("Edit Notes")
+
     def get_task_id(self):
         return self.task_entity.id
 
