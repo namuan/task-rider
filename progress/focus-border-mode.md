@@ -124,3 +124,50 @@ Increased top border to 45 pixels to clear the Mac notch, ensuring the task name
 
 ### Close Button Timer Stop
 The close button now stops the timer by calling `ManageTimerController.toggle_timer()` instead of just hiding the overlay. This ensures the main window reflects the correct timer state when it reappears.
+
+### Persistent Focus Border Across Application Switches
+Implemented macOS-specific window properties to ensure the focus border remains visible when switching to other applications.
+
+**Problem:**
+On macOS, windows with `Qt.WindowType.WindowStaysOnTopHint` still get hidden when the application loses focus. This caused the focus border to disappear when switching to another app.
+
+**Solution:**
+Added `_setup_macos_window_properties()` method that configures the underlying NSWindow with special collection behaviors using the Objective-C runtime via ctypes.
+
+**Technical Implementation:**
+```python
+def _setup_macos_window_properties(self):
+    # Uses ctypes to call Objective-C runtime directly
+    from ctypes import c_void_p, CDLL, c_bool, c_uint
+
+    # Get the NSWindow from the Qt widget's winId
+    view_id = int(self.winId())
+    objc = CDLL(None)
+
+    # Get the window from the view
+    window = objc.objc_msgSend(view_id, window_sel)
+
+    if window:
+        # Prevent window from hiding on app deactivation
+        objc.objc_msgSend(window, set_hides_on_deactivate_sel, False)
+
+        # Set collection behavior to appear on all Spaces and full-screen apps
+        collection_behavior = (
+            NSWindowCollectionBehaviorCanJoinAllSpaces  # 1 << 0
+            | NSWindowCollectionBehaviorFullScreenAuxiliary  # 1 << 8
+        )
+        objc.objc_msgSend(window, set_collection_behavior_sel, collection_behavior)
+```
+
+**Key macOS Window Properties Set:**
+- `hidesOnDeactivate = False` - Prevents the window from being hidden when the application becomes inactive
+- `collectionBehavior = CanJoinAllSpaces | FullScreenAuxiliary` - Allows the window to:
+  - Appear on all macOS Spaces (virtual desktops)
+  - Float above full-screen applications
+
+**Dependencies:**
+- Uses existing `pyobjc` dependency in the project
+- ctypes is part of Python standard library
+
+**Timing:**
+The method is called in `showEvent()` after the widget is shown, ensuring the NSWindow exists before attempting to set its properties. A flag `_macos_properties_set` prevents redundant configuration.
