@@ -112,11 +112,12 @@ app/
 - Configurable border color/thickness
 - Optional timer display in border
 - Keyboard shortcut to toggle border
-- Multi-monitor support (border on active monitor only)
 
-### Multi-Monitor Support
+## Recent Updates
 
-The focus border now appears on all connected monitors simultaneously:
+### Multi-Monitor Support (Current)
+
+The focus border now appears on all connected monitors simultaneously.
 
 **Implementation:**
 - `OverlayController` creates a `FocusBorderWidget` for each screen via `QApplication.screens()`
@@ -135,10 +136,6 @@ The focus border now appears on all connected monitors simultaneously:
 - Added `target_screen` constructor parameter
 - Uses target screen geometry instead of primary screen
 - Renamed internal `screen` attribute to `_target_screen` to avoid QWidget.screen() conflict
-
-## Recent Updates
-
-### Multi-Monitor Support (Current)
 
 ### Task Label Background
 Added semi-transparent black background (`rgba(0, 0, 0, 0.7)`) with rounded corners and padding to the task label for better visibility against any screen content.
