@@ -1,4 +1,4 @@
-from app.widgets.overlay_widget import Overlay
+from app.widgets.focus_border_widget import FocusBorderWidget
 
 
 class OverlayController:
@@ -6,23 +6,29 @@ class OverlayController:
         self.parent = parent
         self.app = app
 
-        self.overlay = Overlay(self.parent.lst_tasks)
-        self.overlay.hide()
+        self.focus_border = FocusBorderWidget(
+            on_close_callback=self.on_focus_border_closed
+        )
+        self.focus_border.hide()
 
-        # app events
         self.app.data.app_events.timer_started.connect(self.display_overlay)
         self.app.data.app_events.timer_paused.connect(self.hide_overlay)
 
     def resize(self, event_size):
-        self.overlay.resize(event_size)
+        pass
 
     def display_overlay(self):
         top_task = self.app.data.get_top_task()
         if not top_task:
-            self.overlay.hide()
+            self.focus_border.hide()
             return
-        self.overlay.setTitle(top_task.task_title)
-        self.overlay.show()
+        self.focus_border.set_task_name(top_task.task_title)
+        self.focus_border.show()
+        self.parent.hide()
 
     def hide_overlay(self):
-        self.overlay.hide()
+        self.focus_border.hide()
+        self.parent.show()
+
+    def on_focus_border_closed(self):
+        self.hide_overlay()
