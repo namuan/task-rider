@@ -39,7 +39,12 @@ class FocusBorderWidget(QWidget):
         font.setPointSize(18)
         font.setBold(True)
         self.task_label.setFont(font)
-        self.task_label.setStyleSheet("color: white; background-color: transparent;")
+        self.task_label.setStyleSheet("""
+            color: white;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 8px;
+            padding: 8px 16px;
+        """)
         layout.addWidget(self.task_label)
 
         self.close_button = QPushButton("✕", self.header_widget)
