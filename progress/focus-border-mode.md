@@ -13,6 +13,7 @@ When a user starts a task, the main TaskRider window hides and a full-screen foc
    - Close button (x) appears next to task name
 
 2. **On Close Button Click**:
+   - Timer stops (via `toggle_timer()`)
    - Border overlay hides
    - Main TaskRider window reappears
 
@@ -35,7 +36,8 @@ class FocusBorderWidget(QWidget):
 
 **Key Attributes:**
 - `border_color`: QColor(0, 122, 255) - Blue accent color
-- `border_width`: 8 pixels - Thick enough to be noticeable
+- `border_width`: 8 pixels - Side and bottom border thickness
+- `top_border_width`: 45 pixels - Thicker top border to clear Mac notch
 
 **Window Flags:**
 - `Qt.WindowType.FramelessWindowHint` - No window decorations
@@ -47,7 +49,7 @@ class FocusBorderWidget(QWidget):
 - `Qt.WidgetAttribute.WA_ShowWithoutActivating` - Doesn't steal focus
 
 **Components:**
-- `task_label`: QLabel displaying the task name (18pt bold, white)
+- `task_label`: QLabel displaying the task name (18pt bold, white text on semi-transparent black background with rounded corners and padding)
 - `close_button`: QPushButton with (x) symbol, circular, hover effect
 - `header_widget`: Container widget for task name and close button
 
@@ -72,7 +74,7 @@ Updated `OverlayController` to manage the focus border:
 **Methods:**
 - `display_overlay()`: Shows focus border, hides main window
 - `hide_overlay()`: Hides focus border, shows main window
-- `on_focus_border_closed()`: Callback for close button, triggers hide
+- `on_focus_border_closed()`: Callback for close button, stops timer via `toggle_timer()`
 
 ## Signal Flow
 
@@ -111,3 +113,14 @@ app/
 - Optional timer display in border
 - Keyboard shortcut to toggle border
 - Multi-monitor support (border on active monitor only)
+
+## Recent Updates
+
+### Task Label Background
+Added semi-transparent black background (`rgba(0, 0, 0, 0.7)`) with rounded corners and padding to the task label for better visibility against any screen content.
+
+### Mac Notch Support
+Increased top border to 45 pixels to clear the Mac notch, ensuring the task name and close button appear below the notch. Side and bottom borders remain 8 pixels.
+
+### Close Button Timer Stop
+The close button now stops the timer by calling `ManageTimerController.toggle_timer()` instead of just hiding the overlay. This ensures the main window reflects the correct timer state when it reappears.
